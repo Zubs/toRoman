@@ -79,3 +79,34 @@ export function toRoman (value: number): string | false {
     
     return romanArray.join('')
 }
+
+export function fromRoman (value: string): number | false {
+    
+    let arabNum = 0
+    const letters: string[] = value.split('')
+
+    letters.forEach((letter) => {
+        if (letter === 'M') {
+            arabNum += 1000
+        } else if (letter === 'D') {
+            arabNum += 500
+        } else if (letter === 'C') {
+            arabNum += 100
+        } else if (letter === 'L') {
+            arabNum += 50
+        } else if (letter === 'X') {
+            arabNum += 10
+        } else if (letter === 'V') {
+            arabNum += 5
+        } else if (letter === 'I') {
+            arabNum += 1
+        } else {
+            throw new Error(`Invalid Roman numeral: ${ letter }`)
+            return false
+        }
+    })
+    
+    return arabNum
+}
+
+console.log(fromRoman('MCCXXXIV'))

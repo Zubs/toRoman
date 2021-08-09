@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.toRoman = void 0;
+exports.fromRoman = exports.toRoman = void 0;
 /**
  * toRoman - Convert an integer to Roman numerals
  * @param { number }value Integer to be converted to Roman numerals
@@ -87,3 +87,37 @@ function toRoman(value) {
     return romanArray.join('');
 }
 exports.toRoman = toRoman;
+function fromRoman(value) {
+    let arabNum = 0;
+    const letters = value.split('');
+    letters.forEach((letter) => {
+        if (letter === 'M') {
+            arabNum += 1000;
+        }
+        else if (letter === 'D') {
+            arabNum += 500;
+        }
+        else if (letter === 'C') {
+            arabNum += 100;
+        }
+        else if (letter === 'L') {
+            arabNum += 50;
+        }
+        else if (letter === 'X') {
+            arabNum += 10;
+        }
+        else if (letter === 'V') {
+            arabNum += 5;
+        }
+        else if (letter === 'I') {
+            arabNum += 1;
+        }
+        else {
+            throw new Error(`Invalid Roman numeral: ${letter}`);
+            return false;
+        }
+    });
+    return arabNum;
+}
+exports.fromRoman = fromRoman;
+console.log(fromRoman('MCCXXXIV'));
