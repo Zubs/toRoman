@@ -1,6 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.fromRoman = exports.toRoman = void 0;
+function getCount(array, value) {
+    let count = 0;
+    array.forEach((item) => {
+        if (item === value) {
+            count++;
+        }
+    });
+    return count;
+}
 /**
  * toRoman - Convert an integer to Roman numerals
  * @param { number }value Integer to be converted to Roman numerals
@@ -10,7 +19,7 @@ function toRoman(value) {
     let romanArray = [];
     // Check for valid numbers
     if (value >= 4000 || value <= 0) {
-        return false;
+        throw new Error(`Value cannot be up to 4000`);
     }
     // Get number digits with place value
     let thousand = Math.floor(value / 1000);
@@ -87,10 +96,30 @@ function toRoman(value) {
     return romanArray.join('');
 }
 exports.toRoman = toRoman;
+/**
+ * fromRoman - Convert Roman numeral to integer
+ * @param { string } value Roman numeral to be converted to integer
+ * @return { number } Integer representation of the input value
+*/
 function fromRoman(value) {
     let arabNum = 0;
     const letters = value.split('');
-    letters.forEach((letter) => {
+    const romans = [
+        ['M', 3],
+        ['D', 1],
+        ['C', 4],
+        ['L', 1],
+        ['X', 4],
+        ['V', 1],
+        ['I', 3]
+    ];
+    romans.forEach((letter) => {
+        if (getCount(letters, letter[0]) > letter[1]) {
+            let error = `${letter[0]} cannot appear more than ${letter[1]} times in a value`;
+            throw new Error(`${error}`);
+        }
+    });
+    letters.forEach((letter, index) => {
         if (letter === 'M') {
             arabNum += 1000;
         }
@@ -98,26 +127,49 @@ function fromRoman(value) {
             arabNum += 500;
         }
         else if (letter === 'C') {
-            arabNum += 100;
+            if (letters[index + 1] === 'M') {
+                arabNum += 900;
+            }
+            else if (letters[index + 1] === 'D') {
+                arabNum += 400;
+            }
+            else {
+                arabNum += 100;
+            }
         }
         else if (letter === 'L') {
             arabNum += 50;
         }
         else if (letter === 'X') {
-            arabNum += 10;
+            if (letters[index + 1] === 'C') {
+                arabNum += 90;
+            }
+            else if (letters[index + 1] === 'L') {
+                arabNum += 40;
+            }
+            else {
+                arabNum += 10;
+            }
         }
         else if (letter === 'V') {
             arabNum += 5;
         }
         else if (letter === 'I') {
-            arabNum += 1;
+            if (letters[index + 1] === 'X') {
+                arabNum += 9;
+            }
+            else if (letters[index + 1] === 'V') {
+                arabNum += 4;
+            }
+            else {
+                arabNum += 1;
+            }
         }
         else {
             throw new Error(`Invalid Roman numeral: ${letter}`);
-            return false;
         }
     });
     return arabNum;
 }
 exports.fromRoman = fromRoman;
-console.log(fromRoman('MCCXXXIV'));
+console.log(fromRoman('MMMCCXXXIV'));
