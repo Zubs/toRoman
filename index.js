@@ -48,6 +48,11 @@ function isRoman(value) {
             throw new Error(`Invalid Roman numeral: ${letter}`);
         }
     });
+    if (letters[0] === 'I') {
+        if (!(letters[1] === 'X' || letters[1] === 'V' || letters[1] === 'I')) {
+            throw new Error(`Unexpected token ${letters[1]}, expected either X, V or I`);
+        }
+    }
     return true;
 }
 exports.isRoman = isRoman;
@@ -147,11 +152,17 @@ function fromRoman(value) {
     if (isRoman(value)) {
         const letters = value.split('');
         letters.forEach((letter, index) => {
+            let next = letters[index + 1];
             if (letter === 'M') {
                 arabNum += 1000;
             }
             else if (letter === 'D') {
-                arabNum += 500;
+                if (next === 'M') {
+                    throw new Error(`Unexpected token ${next}, expected either C, L, X, V or I`);
+                }
+                else {
+                    arabNum += 500;
+                }
             }
             else if (letter === 'C') {
                 if (letters[index + 1] === 'M') {
@@ -203,4 +214,4 @@ function fromRoman(value) {
     return arabNum;
 }
 exports.fromRoman = fromRoman;
-console.log(fromRoman('MMMCMXXXIV'));
+console.log(fromRoman('IC'));

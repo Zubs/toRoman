@@ -1,5 +1,5 @@
 # toroman
-A very lightweight library for converting arabic numerals to roman numerals.
+A very lightweight library for converting arabic numerals to roman numerals, converting roman numerals to arabic numerals, and validating roman numerals.
 
 ## Installation
 It can be installed using npm:
