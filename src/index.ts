@@ -49,17 +49,74 @@ export function isRoman (value: string): true | Error {
     })
 
     // Correct letters
-    letters.forEach((letter) => {
+    letters.forEach((letter, index) => {
         if (!romanLetters.includes(letter)) {
             throw new Error(`Invalid Roman numeral: ${ letter }`)
         }
-    })
 
-    if (letters[0] === 'I') {
-        if (!(letters [1] === 'X' || letters[1] === 'V' || letters[1] === 'I')) {
-            throw new Error(`Unexpected token ${ letters[1] }, expected either X, V or I`)
+        let next = letters[index + 1]
+
+        // Test for D
+        if (letter === romanLetters[1]) {
+            let badNexts = [
+                romanLetters[0], 
+                romanLetters[1]
+            ]
+            
+            if (badNexts.includes(next)) {
+                throw new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
+            }
         }
-    }
+
+        // Test for L
+        if (letter === romanLetters[3]) {
+            let goodNexts = [
+                romanLetters[4],
+                romanLetters[5],
+                romanLetters[6],
+            ]
+            
+            if (!goodNexts.includes(next)) {
+                throw new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
+            }
+        }
+
+        // Test for X
+        if (letter === romanLetters[4]) {
+            let badNexts = [
+                romanLetters[0],
+                romanLetters[1],
+            ]
+
+            if (badNexts.includes(next)) {
+                throw new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
+            }
+        }
+
+        // Test for V
+        if (letter === romanLetters[5]) {
+            let goodNexts = [
+                romanLetters[6],
+            ]
+            
+            if (!goodNexts.includes(next)) {
+                throw new Error(`Unexpected token ${ next }, expected ${ goodNexts[0] }`)
+            }
+        }
+
+        // Test for I
+        if (letter === romanLetters[6]) {
+            let goodNexts = [
+                romanLetters[4], 
+                romanLetters[5], 
+                romanLetters[6]
+            ]
+
+            if (!goodNexts.includes(next)) {
+                throw new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
+            }
+        }
+    })
     
     return true
 }
@@ -159,15 +216,10 @@ export function fromRoman (value: string): number {
         const letters: string[] = value.split('')
 
         letters.forEach((letter, index) => {
-            let next = letters[index + 1]
             if (letter === 'M') {
                 arabNum += 1000
             } else if (letter === 'D') {
-                if (next === 'M') {
-                    throw new Error(`Unexpected token ${ next }, expected either C, L, X, V or I`)
-                } else {
-                    arabNum += 500
-                }
+                arabNum += 500
             } else if (letter === 'C') {
                 if (letters[index + 1] === 'M') {
                     arabNum += 900
@@ -208,5 +260,3 @@ export function fromRoman (value: string): number {
     
     return arabNum
 }
-
-console.log(fromRoman('IC'))
