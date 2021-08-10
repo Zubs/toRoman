@@ -50,31 +50,21 @@ function isRoman(value) {
         let next = letters[index + 1];
         // Test for D
         if (letter === romanLetters[1]) {
-            let badNexts = [
-                romanLetters[0],
-                romanLetters[1]
-            ];
+            let badNexts = romanLetters.slice(0, 2);
             if (badNexts.includes(next)) {
                 throw new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
             }
         }
         // Test for L
         if (letter === romanLetters[3]) {
-            let goodNexts = [
-                romanLetters[4],
-                romanLetters[5],
-                romanLetters[6],
-            ];
+            let goodNexts = romanLetters.slice(4, 3);
             if (!goodNexts.includes(next)) {
                 throw new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
             }
         }
         // Test for X
         if (letter === romanLetters[4]) {
-            let badNexts = [
-                romanLetters[0],
-                romanLetters[1],
-            ];
+            let badNexts = romanLetters.slice(0, 2);
             if (badNexts.includes(next)) {
                 throw new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
             }
@@ -90,11 +80,7 @@ function isRoman(value) {
         }
         // Test for I
         if (letter === romanLetters[6]) {
-            let goodNexts = [
-                romanLetters[4],
-                romanLetters[5],
-                romanLetters[6]
-            ];
+            let goodNexts = romanLetters.slice(4, 3);
             if (!goodNexts.includes(next)) {
                 throw new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
             }
