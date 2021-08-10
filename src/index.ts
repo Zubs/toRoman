@@ -1,15 +1,124 @@
+function getCount (array: string[], value: string | number): number {
+	
+    let count: number = 0
+	
+    array.forEach((item) => {
+		if (item === value) {
+			count++
+		}
+	})
+
+	return count
+}
+
+/**
+ * isRoman - Confirm that string is a valid roman numeral
+ * @param { string } value String to be tested
+ * @returns { boolean } true or false 
+ */
+export function isRoman (value: string): true | Error {
+
+    if (!value) {
+        return new Error(`Roman numeral cannot be empty`)
+    }
+
+    // Input must be a string
+    if (typeof value != 'string') {
+        return new Error(`Roman numeral must be of type string`)
+    }
+
+    const letters: string[] = value.split('')
+    const romans = [
+        ['M', 4], 
+        ['D', 1], 
+        ['C', 4], 
+        ['L', 1], 
+        ['X', 4], 
+        ['V', 1], 
+        ['I', 3]
+    ]
+    const romanLetters: string[] = ['M', 'D', 'C', 'L', 'X', 'V', 'I'] 
+
+    // Count rules
+    romans.forEach((letter) => {
+        let count = getCount(letters, letter[0])
+        if (count && count > letter[1]) {
+            let error = `${ letter[0] } cannot appear more than ${ letter[1] } times in a value`
+            return new Error(`${ error }`)
+        }
+    })
+
+    // Correct letters
+    letters.forEach((letter, index) => {
+        if (!romanLetters.includes(letter)) {
+            return new Error(`Invalid Roman numeral: ${ letter }`)
+        }
+
+        let next = letters[index + 1]
+
+        // Test for D
+        if (letter === romanLetters[1]) {
+            let badNexts = romanLetters.slice(0, 2)
+            
+            if (badNexts.includes(next)) {
+                return new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
+            }
+        }
+
+        // Test for L
+        if (letter === romanLetters[3]) {
+            let goodNexts = romanLetters.slice(4, 3)
+            
+            if (!goodNexts.includes(next)) {
+                return new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
+            }
+        }
+
+        // Test for X
+        if (letter === romanLetters[4]) {
+            let badNexts = romanLetters.slice(0, 2)
+
+            if (badNexts.includes(next)) {
+                return new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
+            }
+        }
+
+        // Test for V
+        if (letter === romanLetters[5]) {
+            let goodNexts = [
+                romanLetters[6],
+            ]
+            
+            if (!goodNexts.includes(next)) {
+                return new Error(`Unexpected token ${ next }, expected ${ goodNexts[0] }`)
+            }
+        }
+
+        // Test for I
+        if (letter === romanLetters[6]) {
+            let goodNexts = romanLetters.slice(4, 3)
+
+            if (!goodNexts.includes(next)) {
+                return new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
+            }
+        }
+    })
+    
+    return true
+}
+
 /**
  * toRoman - Convert an integer to Roman numerals
  * @param { number }value Integer to be converted to Roman numerals
- * @return { string } Roman numeral representation of the input value
+ * @returns { string } Roman numeral representation of the input value
 */
-export function toRoman (value: number): string | false {
+export function toRoman (value: number): string | Error {
 
     let romanArray: string[] = []
 
     // Check for valid numbers
     if (value >= 4000 || value <= 0) {
-        return false
+        return new Error(`Value cannot be up to 4000`)
     }
 
     // Get number digits with place value
@@ -78,4 +187,62 @@ export function toRoman (value: number): string | false {
     }
     
     return romanArray.join('')
+}
+
+/**
+ * fromRoman - Convert Roman numeral to integer
+ * @param { string } value Roman numeral to be converted to integer
+ * @returns { number } Integer representation of the input value
+*/
+export function fromRoman (value: string): number | Error {
+    
+    let arabNum = 0
+
+    if (isRoman(value)) {
+        const letters: string[] = value.split('')
+
+        letters.forEach((letter, index) => {
+            if (letter === 'M') {
+                arabNum += 1000
+            } else if (letter === 'D') {
+                arabNum += 500
+            } else if (letter === 'C') {
+                if (letters[index + 1] === 'M') {
+                    arabNum += 900
+                    letters.splice(index + 1, 1)
+                } else if (letters[index + 1] === 'D') {
+                    arabNum += 400
+                    letters.splice(index + 1, 1)
+                } else {
+                    arabNum += 100
+                }
+            } else if (letter === 'L') {
+                arabNum += 50
+            } else if (letter === 'X') {
+                if (letters[index + 1] === 'C') {
+                    arabNum += 90
+                    letters.splice(index + 1, 1)
+                } else if (letters[index + 1] === 'L') {
+                    arabNum += 40
+                    letters.splice(index + 1, 1)
+                } else {
+                    arabNum += 10
+                }
+            } else if (letter === 'V') {
+                arabNum += 5
+            } else if (letter === 'I') {
+                if (letters[index + 1] === 'X') {
+                    arabNum += 9
+                    letters.splice(index + 1, 1)
+                } else if (letters[index + 1] === 'V') {
+                    arabNum += 4
+                    letters.splice(index + 1, 1)
+                } else {
+                    arabNum += 1
+                }
+            }
+        })
+    }
+    
+    return arabNum
 }
