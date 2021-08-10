@@ -19,12 +19,12 @@ function getCount (array: string[], value: string | number): number {
 export function isRoman (value: string): true | Error {
 
     if (!value) {
-        throw new Error(`Roman numeral cannot be empty`)
+        return new Error(`Roman numeral cannot be empty`)
     }
 
     // Input must be a string
     if (typeof value != 'string') {
-        throw new Error(`Roman numeral must be of type string`)
+        return new Error(`Roman numeral must be of type string`)
     }
 
     const letters: string[] = value.split('')
@@ -44,14 +44,14 @@ export function isRoman (value: string): true | Error {
         let count = getCount(letters, letter[0])
         if (count && count > letter[1]) {
             let error = `${ letter[0] } cannot appear more than ${ letter[1] } times in a value`
-            throw new Error(`${ error }`)
+            return new Error(`${ error }`)
         }
     })
 
     // Correct letters
     letters.forEach((letter, index) => {
         if (!romanLetters.includes(letter)) {
-            throw new Error(`Invalid Roman numeral: ${ letter }`)
+            return new Error(`Invalid Roman numeral: ${ letter }`)
         }
 
         let next = letters[index + 1]
@@ -61,7 +61,7 @@ export function isRoman (value: string): true | Error {
             let badNexts = romanLetters.slice(0, 2)
             
             if (badNexts.includes(next)) {
-                throw new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
+                return new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
             }
         }
 
@@ -70,7 +70,7 @@ export function isRoman (value: string): true | Error {
             let goodNexts = romanLetters.slice(4, 3)
             
             if (!goodNexts.includes(next)) {
-                throw new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
+                return new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
             }
         }
 
@@ -79,7 +79,7 @@ export function isRoman (value: string): true | Error {
             let badNexts = romanLetters.slice(0, 2)
 
             if (badNexts.includes(next)) {
-                throw new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
+                return new Error(`Unexpected token ${ next }, ${ next } cannot come after ${ letter }`)
             }
         }
 
@@ -90,7 +90,7 @@ export function isRoman (value: string): true | Error {
             ]
             
             if (!goodNexts.includes(next)) {
-                throw new Error(`Unexpected token ${ next }, expected ${ goodNexts[0] }`)
+                return new Error(`Unexpected token ${ next }, expected ${ goodNexts[0] }`)
             }
         }
 
@@ -99,7 +99,7 @@ export function isRoman (value: string): true | Error {
             let goodNexts = romanLetters.slice(4, 3)
 
             if (!goodNexts.includes(next)) {
-                throw new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
+                return new Error(`Unexpected token ${ next }, expected either ${ goodNexts[0] }, ${ goodNexts[1] } or ${ goodNexts[2] }`)
             }
         }
     })
@@ -112,13 +112,13 @@ export function isRoman (value: string): true | Error {
  * @param { number }value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
 */
-export function toRoman (value: number): string {
+export function toRoman (value: number): string | Error {
 
     let romanArray: string[] = []
 
     // Check for valid numbers
     if (value >= 4000 || value <= 0) {
-        throw new Error(`Value cannot be up to 4000`)
+        return new Error(`Value cannot be up to 4000`)
     }
 
     // Get number digits with place value
@@ -194,7 +194,7 @@ export function toRoman (value: number): string {
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
 */
-export function fromRoman (value: string): number {
+export function fromRoman (value: string): number | Error {
     
     let arabNum = 0
 

@@ -17,11 +17,11 @@ function getCount(array, value) {
  */
 function isRoman(value) {
     if (!value) {
-        throw new Error(`Roman numeral cannot be empty`);
+        return new Error(`Roman numeral cannot be empty`);
     }
     // Input must be a string
     if (typeof value != 'string') {
-        throw new Error(`Roman numeral must be of type string`);
+        return new Error(`Roman numeral must be of type string`);
     }
     const letters = value.split('');
     const romans = [
@@ -39,34 +39,34 @@ function isRoman(value) {
         let count = getCount(letters, letter[0]);
         if (count && count > letter[1]) {
             let error = `${letter[0]} cannot appear more than ${letter[1]} times in a value`;
-            throw new Error(`${error}`);
+            return new Error(`${error}`);
         }
     });
     // Correct letters
     letters.forEach((letter, index) => {
         if (!romanLetters.includes(letter)) {
-            throw new Error(`Invalid Roman numeral: ${letter}`);
+            return new Error(`Invalid Roman numeral: ${letter}`);
         }
         let next = letters[index + 1];
         // Test for D
         if (letter === romanLetters[1]) {
             let badNexts = romanLetters.slice(0, 2);
             if (badNexts.includes(next)) {
-                throw new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
+                return new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
             }
         }
         // Test for L
         if (letter === romanLetters[3]) {
             let goodNexts = romanLetters.slice(4, 3);
             if (!goodNexts.includes(next)) {
-                throw new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
+                return new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
             }
         }
         // Test for X
         if (letter === romanLetters[4]) {
             let badNexts = romanLetters.slice(0, 2);
             if (badNexts.includes(next)) {
-                throw new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
+                return new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
             }
         }
         // Test for V
@@ -75,14 +75,14 @@ function isRoman(value) {
                 romanLetters[6],
             ];
             if (!goodNexts.includes(next)) {
-                throw new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
+                return new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
             }
         }
         // Test for I
         if (letter === romanLetters[6]) {
             let goodNexts = romanLetters.slice(4, 3);
             if (!goodNexts.includes(next)) {
-                throw new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
+                return new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
             }
         }
     });
@@ -98,7 +98,7 @@ function toRoman(value) {
     let romanArray = [];
     // Check for valid numbers
     if (value >= 4000 || value <= 0) {
-        throw new Error(`Value cannot be up to 4000`);
+        return new Error(`Value cannot be up to 4000`);
     }
     // Get number digits with place value
     let thousand = Math.floor(value / 1000);
