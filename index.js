@@ -23,6 +23,7 @@ function isRoman(value) {
     if (typeof value != 'string') {
         return new Error(`Roman numeral must be of type string`);
     }
+    value = value.toUpperCase();
     const letters = value.split('');
     const romans = [
         ['M', 4],

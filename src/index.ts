@@ -27,6 +27,8 @@ export function isRoman (value: string): true | Error {
         return new Error(`Roman numeral must be of type string`)
     }
 
+    value = value.toUpperCase()
+
     const letters: string[] = value.split('')
     const romans = [
         ['M', 4], 
