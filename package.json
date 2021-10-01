@@ -4,7 +4,7 @@
   "description": "Convert any number less than 4000 to roman numerals and back to integer",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine tests/toRomanSpec.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/Zubs/toRoman/issues"
   },
-  "homepage": "https://github.com/Zubs/toRoman#readme"
+  "homepage": "https://github.com/Zubs/toRoman#readme",
+  "dependencies": {
+    "jasmine": "^3.9.0"
+  },
+  "devDependencies": {
+    "@types/jasmine": "^3.9.1"
+  }
 }

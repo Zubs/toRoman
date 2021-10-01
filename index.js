@@ -1,6 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.diff = exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = void 0;
+exports.diff = exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = exports.getCount = void 0;
+/**
+ * getCount - Retuns the number of times and element occurs in an array
+ * @param { string[] } array Array to be checked
+ * @param { string | number } value string or number to be counted
+ * @return { number } Count of value in array
+ */
 function getCount(array, value) {
     let count = 0;
     array.forEach((item) => {
@@ -10,6 +16,7 @@ function getCount(array, value) {
     });
     return count;
 }
+exports.getCount = getCount;
 /**
  * isRoman - Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
@@ -272,17 +279,18 @@ function sum(expected, ...args) {
 }
 exports.sum = sum;
 /**
- *
  * @param expected { string } Expected response type
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
  */
 function diff(expected, numerals) {
     let sum = 0;
+    if (numerals.length > 2) {
+        return new Error('Cannot subtract more than 2 numerals');
+    }
     if (isRoman(numerals[0]) && isRoman(numerals[1])) {
         sum = Math.abs(fromRoman(numerals[0]) - fromRoman(numerals[1]));
     }
     return expected === 'number' ? sum : toRoman(sum);
 }
 exports.diff = diff;
-console.log(diff('number', ['X', 'MXC']));
