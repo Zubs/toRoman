@@ -50,6 +50,17 @@ export function isRoman (value: string): true | Error {
         }
     })
 
+    // Testing single digits
+    if (letters.length < 2) {
+        let letter = letters[0]
+
+        if (!romanLetters.includes(letter)) {
+            return new Error(`Invalid Roman numeral: ${ letter }`)
+        } else {
+            return true
+        }
+    }
+
     // Correct letters
     letters.forEach((letter, index) => {
         if (!romanLetters.includes(letter)) {
@@ -111,7 +122,7 @@ export function isRoman (value: string): true | Error {
 
 /**
  * toRoman - Convert an integer to Roman numerals
- * @param { number }value Integer to be converted to Roman numerals
+ * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
 */
 export function toRoman (value: number): string | Error {
@@ -204,6 +215,8 @@ export function fromRoman (value: string): number | Error {
         const letters: string[] = value.split('')
 
         letters.forEach((letter, index) => {
+            letter = letter.toUpperCase()
+
             if (letter === 'M') {
                 arabNum += 1000
             } else if (letter === 'D') {
@@ -248,3 +261,24 @@ export function fromRoman (value: string): number | Error {
     
     return arabNum
 }
+
+/**
+ * @param args Roman numerals to be added
+ * @returns { string } Final roman numeral
+ */
+export function sum (expected: 'number' | 'roman', ...args: string[]): string | number | Error {
+
+    let sum = 0
+
+    args.forEach((numeral) => {
+        if (isRoman(numeral) === true) {
+             sum += fromRoman(numeral) as number
+        } else {
+            return new Error(`Invalid roman numeral ${ numeral }`)
+        }
+    })
+    
+    return expected === 'number' ? sum : toRoman(sum)
+}
+
+console.log(fromRoman('iiii'))
