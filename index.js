@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = void 0;
+exports.diff = exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = void 0;
 function getCount(array, value) {
     let count = 0;
     array.forEach((item) => {
@@ -270,4 +270,11 @@ function sum(expected, ...args) {
     return expected === 'number' ? sum : toRoman(sum);
 }
 exports.sum = sum;
-console.log(fromRoman('iiii'));
+function diff(expected, numerals) {
+    let sum = 0;
+    if (isRoman(numerals[0]) && isRoman(numerals[1])) {
+        sum = Math.abs(fromRoman(numerals[0]) - fromRoman(numerals[1]));
+    }
+    return expected === 'number' ? sum : toRoman(sum);
+}
+exports.diff = diff;
