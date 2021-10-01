@@ -281,4 +281,12 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): string | 
     return expected === 'number' ? sum : toRoman(sum)
 }
 
-console.log(fromRoman('iiii'))
+export function diff (expected: 'number' | 'roman', numerals: string[]) {
+    let sum = 0
+    
+    if (isRoman(numerals[0]) && isRoman(numerals[1])) {
+        sum = Math.abs((fromRoman(numerals[0]) as number) - (fromRoman(numerals[1]) as number))
+    }
+
+    return expected === 'number' ? sum : toRoman(sum)
+}
