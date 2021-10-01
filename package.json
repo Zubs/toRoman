@@ -1,6 +1,6 @@
 {
   "name": "toroman",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Convert any number less than 4000 to roman numerals and back to integer",
   "main": "index.js",
   "scripts": {
