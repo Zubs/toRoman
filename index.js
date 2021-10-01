@@ -254,8 +254,9 @@ function fromRoman(value) {
 }
 exports.fromRoman = fromRoman;
 /**
- * @param args Roman numerals to be added
- * @returns { string } Final roman numeral
+ * @param expected { string } Expected response type
+ * @param args { string[] } Roman numerals to be added
+ * @returns { string | number } Final roman numeral
  */
 function sum(expected, ...args) {
     let sum = 0;
@@ -270,6 +271,12 @@ function sum(expected, ...args) {
     return expected === 'number' ? sum : toRoman(sum);
 }
 exports.sum = sum;
+/**
+ *
+ * @param expected { string } Expected response type
+ * @param numerals { string[] } Roman numerals to subtract
+ * @returns { string | number }
+ */
 function diff(expected, numerals) {
     let sum = 0;
     if (isRoman(numerals[0]) && isRoman(numerals[1])) {
@@ -278,3 +285,4 @@ function diff(expected, numerals) {
     return expected === 'number' ? sum : toRoman(sum);
 }
 exports.diff = diff;
+console.log(diff('number', ['X', 'MXC']));

@@ -263,8 +263,9 @@ export function fromRoman (value: string): number | Error {
 }
 
 /**
- * @param args Roman numerals to be added
- * @returns { string } Final roman numeral
+ * @param expected { string } Expected response type
+ * @param args { string[] } Roman numerals to be added
+ * @returns { string | number } Final roman numeral
  */
 export function sum (expected: 'number' | 'roman', ...args: string[]): string | number | Error {
 
@@ -281,8 +282,17 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): string | 
     return expected === 'number' ? sum : toRoman(sum)
 }
 
-export function diff (expected: 'number' | 'roman', numerals: string[]) {
+/**
+ * @param expected { string } Expected response type
+ * @param numerals { string[] } Roman numerals to subtract
+ * @returns { string | number }
+ */
+export function diff (expected: 'number' | 'roman', numerals: string[]): string | number | Error {
     let sum = 0
+
+    if (numerals.length > 2) {
+        return new Error('Cannot subtract more than 2 numerals')
+    }
     
     if (isRoman(numerals[0]) && isRoman(numerals[1])) {
         sum = Math.abs((fromRoman(numerals[0]) as number) - (fromRoman(numerals[1]) as number))

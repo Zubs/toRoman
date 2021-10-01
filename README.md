@@ -3,8 +3,12 @@ A very lightweight library for converting arabic numerals to roman numerals, con
 
 ## Installation
 It can be installed using npm:
+```sh
+npm i toroman
 ```
-$ npm i toroman
+
+```
+const roman = require('toRoman')
 ```
 
 ### Methods
@@ -55,7 +59,9 @@ export function isRoman (value: string): true | Error {}
 
 <b>Example</b>
 ```
-console.log(roman.isRoman('MMMCCXXXIV')) // Returns true
+console.log(roman.isRoman('MMMCCXXXIV')) 
+
+// Returns true
 ```
 
 #### Sum roman numerals and get output as roman numeral or numbers
@@ -67,5 +73,29 @@ console.log(roman.isRoman('MMMCCXXXIV')) // Returns true
 export function sum (expected: 'number' | 'roman', ...args: string[]): string | number | Error {}
 ```
 
-## Found this project useful?
+<b>Example</b>
+```js
+console.log(roman.sum('number', 'X', 'MXC')) 
+
+// Returns 1100
+```
+
+#### Get difference between two roman numerals and get output as roman numeral or numbers
+```js
+/**
+ * @param expected { string } Expected response type
+ * @param numerals { string[] } Roman numerals to subtract
+ * @returns { string | number }
+ */
+export function diff (expected: 'number' | 'roman', numerals: string[]) {
+```
+
+<b>Example</b>
+```js
+console.log(roman.diff('number', ['X', 'MXC']))
+
+// Returns 1080
+```
+
+### Found this project useful?
 If you found this project useful or you like what you see, then please consider giving it a :star: on Github and sharing it with your friends via social media.
