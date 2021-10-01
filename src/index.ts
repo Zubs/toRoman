@@ -280,8 +280,6 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): string | 
     args.forEach((numeral) => {
         if (isRoman(numeral) === true) {
              sum += fromRoman(numeral) as number
-        } else {
-            return new Error(`Invalid roman numeral ${ numeral }`)
         }
     })
     

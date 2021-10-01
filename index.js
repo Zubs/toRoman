@@ -271,9 +271,6 @@ function sum(expected, ...args) {
         if (isRoman(numeral) === true) {
             sum += fromRoman(numeral);
         }
-        else {
-            return new Error(`Invalid roman numeral ${numeral}`);
-        }
     });
     return expected === 'number' ? sum : toRoman(sum);
 }
