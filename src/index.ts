@@ -1,4 +1,10 @@
-function getCount (array: string[], value: string | number): number {
+/**
+ * getCount - Retuns the number of times and element occurs in an array
+ * @param { string[] } array Array to be checked
+ * @param { string | number } value string or number to be counted
+ * @return { number } Count of value in array
+ */
+export function getCount (array: string[], value: string | number): number {
 	
     let count: number = 0
 	
@@ -274,8 +280,6 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): string | 
     args.forEach((numeral) => {
         if (isRoman(numeral) === true) {
              sum += fromRoman(numeral) as number
-        } else {
-            return new Error(`Invalid roman numeral ${ numeral }`)
         }
     })
     
