@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fromRoman = exports.toRoman = exports.isRoman = void 0;
+exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = void 0;
 function getCount(array, value) {
     let count = 0;
     array.forEach((item) => {
@@ -43,6 +43,16 @@ function isRoman(value) {
             return new Error(`${error}`);
         }
     });
+    // Testing single digits
+    if (letters.length < 2) {
+        let letter = letters[0];
+        if (!romanLetters.includes(letter)) {
+            return new Error(`Invalid Roman numeral: ${letter}`);
+        }
+        else {
+            return true;
+        }
+    }
     // Correct letters
     letters.forEach((letter, index) => {
         if (!romanLetters.includes(letter)) {
@@ -92,7 +102,7 @@ function isRoman(value) {
 exports.isRoman = isRoman;
 /**
  * toRoman - Convert an integer to Roman numerals
- * @param { number }value Integer to be converted to Roman numerals
+ * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
 */
 function toRoman(value) {
@@ -186,6 +196,7 @@ function fromRoman(value) {
     if (isRoman(value)) {
         const letters = value.split('');
         letters.forEach((letter, index) => {
+            letter = letter.toUpperCase();
             if (letter === 'M') {
                 arabNum += 1000;
             }
@@ -242,3 +253,21 @@ function fromRoman(value) {
     return arabNum;
 }
 exports.fromRoman = fromRoman;
+/**
+ * @param args Roman numerals to be added
+ * @returns { string } Final roman numeral
+ */
+function sum(expected, ...args) {
+    let sum = 0;
+    args.forEach((numeral) => {
+        if (isRoman(numeral) === true) {
+            sum += fromRoman(numeral);
+        }
+        else {
+            return new Error(`Invalid roman numeral ${numeral}`);
+        }
+    });
+    return expected === 'number' ? sum : toRoman(sum);
+}
+exports.sum = sum;
+console.log(fromRoman('iiii'));
