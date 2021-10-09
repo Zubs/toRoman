@@ -295,7 +295,7 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): general |
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
  */
-export function diff (expected: 'number' | 'roman', numerals: string[]): general| Error {
+export function diff (expected: 'number' | 'roman', numerals: string[]): general | Error {
     let sum = 0
 
     if (numerals.length > 2) {
@@ -315,6 +315,62 @@ export function diff (expected: 'number' | 'roman', numerals: string[]): general
  * @param start { string | number } Value to start from
  * @param intervals { string | number } Difference between values
  */
-export function range (end: general, start: general = 'I', intervals: general = 'I'): string[] {
-    return []
+export function range (end: general, start: general = 'I', intervals: general = 'I'): string[] | Error {
+    let endNum: number = 1;
+    let startNum: number = 1;
+    let diffNum: number = 1;
+    let ranged: string[] = [];
+
+    // Validate end value
+    if (typeof end === 'string') {
+        if (isRoman(end)) {
+            endNum = fromRoman(end) as number
+        }
+    } else if (typeof end === 'number') {
+        if (end >= 4000 || end <= 0) {
+            return new Error('Range has to be between 1 and 3999')
+        }
+
+        endNum = end
+    } else {
+        return new Error('End value must be a string or number')
+    }
+
+    // Validate start value
+    if (start && typeof start === 'string') {
+        if (isRoman(start)) {
+            startNum = fromRoman(start) as number
+        }
+    } else if (start && typeof start === 'number') {
+        if (start >= 4000 || start <= 0) {
+            return new Error('Range has to be between 1 and 3999')
+        }
+
+        startNum = start
+    } else {
+        return new Error('Start value must be a string or number')
+    }
+
+    // Validate interval value
+    if (intervals && typeof intervals === 'string') {
+        if (isRoman(intervals)) {
+            diffNum = fromRoman(intervals) as number
+        }
+    } else if (intervals && typeof intervals === 'number') {
+        if (intervals >= 4000 || intervals <= 0) {
+            return new Error('Range has to be between 1 and 3999')
+        }
+
+        diffNum = intervals
+    } else {
+        return new Error('Start value must be a string or number')
+    }
+
+    for (let i = startNum; i < endNum + 1; i += diffNum) {
+        ranged.push(toRoman(i) as string)
+    }
+
+    return ranged
 }
+
+console.log(range(22, 3, 5))
