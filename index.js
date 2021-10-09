@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.diff = exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = exports.getCount = void 0;
+exports.range = exports.diff = exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = exports.getCount = void 0;
 /**
- * getCount - Retuns the number of times and element occurs in an array
+ * Retuns the number of times and element occurs in an array
  * @param { string[] } array Array to be checked
  * @param { string | number } value string or number to be counted
  * @return { number } Count of value in array
@@ -18,7 +18,7 @@ function getCount(array, value) {
 }
 exports.getCount = getCount;
 /**
- * isRoman - Confirm that string is a valid roman numeral
+ * Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
  * @returns { boolean } true or false
  */
@@ -108,7 +108,7 @@ function isRoman(value) {
 }
 exports.isRoman = isRoman;
 /**
- * toRoman - Convert an integer to Roman numerals
+ * Convert an integer to Roman numerals
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
 */
@@ -194,7 +194,7 @@ function toRoman(value) {
 }
 exports.toRoman = toRoman;
 /**
- * fromRoman - Convert Roman numeral to integer
+ * Convert Roman numeral to integer
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
 */
@@ -261,6 +261,7 @@ function fromRoman(value) {
 }
 exports.fromRoman = fromRoman;
 /**
+ * Sum roman numerals
  * @param expected { string } Expected response type
  * @param args { string[] } Roman numerals to be added
  * @returns { string | number } Final roman numeral
@@ -276,6 +277,7 @@ function sum(expected, ...args) {
 }
 exports.sum = sum;
 /**
+ * Get difference between two roman numerals
  * @param expected { string } Expected response type
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
@@ -291,3 +293,66 @@ function diff(expected, numerals) {
     return expected === 'number' ? sum : toRoman(sum);
 }
 exports.diff = diff;
+/**
+ * Get range of roman numerals
+ * @param end { string | number } Value to stop at
+ * @param start { string | number } Value to start from
+ * @param intervals { string | number } Difference between values
+ */
+function range(end, start = 'I', intervals = 'I') {
+    let endNum = 1;
+    let startNum = 1;
+    let diffNum = 1;
+    let ranged = [];
+    // Validate end value
+    if (typeof end === 'string') {
+        if (isRoman(end)) {
+            endNum = fromRoman(end);
+        }
+    }
+    else if (typeof end === 'number') {
+        if (end >= 4000 || end <= 0) {
+            return new Error('Range has to be between 1 and 3999');
+        }
+        endNum = end;
+    }
+    else {
+        return new Error('End value must be a string or number');
+    }
+    // Validate start value
+    if (start && typeof start === 'string') {
+        if (isRoman(start)) {
+            startNum = fromRoman(start);
+        }
+    }
+    else if (start && typeof start === 'number') {
+        if (start >= 4000 || start <= 0) {
+            return new Error('Range has to be between 1 and 3999');
+        }
+        startNum = start;
+    }
+    else {
+        return new Error('Start value must be a string or number');
+    }
+    // Validate interval value
+    if (intervals && typeof intervals === 'string') {
+        if (isRoman(intervals)) {
+            diffNum = fromRoman(intervals);
+        }
+    }
+    else if (intervals && typeof intervals === 'number') {
+        if (intervals >= 4000 || intervals <= 0) {
+            return new Error('Range has to be between 1 and 3999');
+        }
+        diffNum = intervals;
+    }
+    else {
+        return new Error('Start value must be a string or number');
+    }
+    for (let i = startNum; i < endNum + 1; i += diffNum) {
+        ranged.push(toRoman(i));
+    }
+    return ranged;
+}
+exports.range = range;
+console.log(range(22, 3, 5));

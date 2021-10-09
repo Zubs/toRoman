@@ -7,7 +7,7 @@ It can be installed using npm:
 npm i toroman
 ```
 
-```
+```js
 const roman = require('toRoman')
 ```
 
@@ -87,7 +87,7 @@ console.log(roman.sum('number', 'X', 'MXC'))
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
  */
-export function diff (expected: 'number' | 'roman', numerals: string[]) {
+export function diff (expected: 'number' | 'roman', numerals: string[]) {}
 ```
 
 <b>Example</b>
@@ -95,6 +95,48 @@ export function diff (expected: 'number' | 'roman', numerals: string[]) {
 console.log(roman.diff('number', ['X', 'MXC']))
 
 // Returns 1080
+```
+
+#### Get a range of roman numerals
+```js
+/**
+ * Get range of roman numerals
+ * @param end { string | number } Value to stop at
+ * @param start { string | number } Value to start from
+ * @param intervals { string | number } Difference between values
+ */
+export function range (end: string | number, start: string | number = 'I', intervals: string | number = 'I'): string[] | Error {}
+```
+
+<b>Examples</b>
+```js
+console.log(roman.range(7))
+
+// Returns [ 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII' ]
+```
+
+```js
+console.log(roman.range('IX'))
+
+// Returns [ 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX' ]
+```
+
+```js
+console.log(roman.range(12, 7))
+
+// Returns [ 'VII', 'VIII', 'IX', 'X', 'XI', 'XII' ]
+```
+
+```js
+console.log(roman.range(12, 'IX'))
+
+// Returns [ 'IX', 'X', 'XI', 'XII' ]
+```
+
+```js
+console.log(roman.range(22, 3, 5))
+
+// Returns [ 'III', 'VIII', 'XIII', 'XVIII' ]
 ```
 
 ### Found this project useful?

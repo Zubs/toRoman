@@ -1,10 +1,12 @@
+type general = string | number
+
 /**
- * getCount - Retuns the number of times and element occurs in an array
+ * Retuns the number of times and element occurs in an array
  * @param { string[] } array Array to be checked
  * @param { string | number } value string or number to be counted
  * @return { number } Count of value in array
  */
-export function getCount (array: string[], value: string | number): number {
+export function getCount (array: string[], value: general): number {
 	
     let count: number = 0
 	
@@ -18,7 +20,7 @@ export function getCount (array: string[], value: string | number): number {
 }
 
 /**
- * isRoman - Confirm that string is a valid roman numeral
+ * Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
  * @returns { boolean } true or false 
  */
@@ -127,7 +129,7 @@ export function isRoman (value: string): true | Error {
 }
 
 /**
- * toRoman - Convert an integer to Roman numerals
+ * Convert an integer to Roman numerals
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
 */
@@ -209,7 +211,7 @@ export function toRoman (value: number): string | Error {
 }
 
 /**
- * fromRoman - Convert Roman numeral to integer
+ * Convert Roman numeral to integer
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
 */
@@ -269,11 +271,12 @@ export function fromRoman (value: string): number | Error {
 }
 
 /**
+ * Sum roman numerals
  * @param expected { string } Expected response type
  * @param args { string[] } Roman numerals to be added
  * @returns { string | number } Final roman numeral
  */
-export function sum (expected: 'number' | 'roman', ...args: string[]): string | number | Error {
+export function sum (expected: 'number' | 'roman', ...args: string[]): general | Error {
 
     let sum = 0
 
@@ -287,11 +290,12 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): string | 
 }
 
 /**
+ * Get difference between two roman numerals
  * @param expected { string } Expected response type
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
  */
-export function diff (expected: 'number' | 'roman', numerals: string[]): string | number | Error {
+export function diff (expected: 'number' | 'roman', numerals: string[]): general | Error {
     let sum = 0
 
     if (numerals.length > 2) {
@@ -304,3 +308,69 @@ export function diff (expected: 'number' | 'roman', numerals: string[]): string 
 
     return expected === 'number' ? sum : toRoman(sum)
 }
+
+/**
+ * Get range of roman numerals
+ * @param end { string | number } Value to stop at
+ * @param start { string | number } Value to start from
+ * @param intervals { string | number } Difference between values
+ */
+export function range (end: general, start: general = 'I', intervals: general = 'I'): string[] | Error {
+    let endNum: number = 1;
+    let startNum: number = 1;
+    let diffNum: number = 1;
+    let ranged: string[] = [];
+
+    // Validate end value
+    if (typeof end === 'string') {
+        if (isRoman(end)) {
+            endNum = fromRoman(end) as number
+        }
+    } else if (typeof end === 'number') {
+        if (end >= 4000 || end <= 0) {
+            return new Error('Range has to be between 1 and 3999')
+        }
+
+        endNum = end
+    } else {
+        return new Error('End value must be a string or number')
+    }
+
+    // Validate start value
+    if (start && typeof start === 'string') {
+        if (isRoman(start)) {
+            startNum = fromRoman(start) as number
+        }
+    } else if (start && typeof start === 'number') {
+        if (start >= 4000 || start <= 0) {
+            return new Error('Range has to be between 1 and 3999')
+        }
+
+        startNum = start
+    } else {
+        return new Error('Start value must be a string or number')
+    }
+
+    // Validate interval value
+    if (intervals && typeof intervals === 'string') {
+        if (isRoman(intervals)) {
+            diffNum = fromRoman(intervals) as number
+        }
+    } else if (intervals && typeof intervals === 'number') {
+        if (intervals >= 4000 || intervals <= 0) {
+            return new Error('Range has to be between 1 and 3999')
+        }
+
+        diffNum = intervals
+    } else {
+        return new Error('Start value must be a string or number')
+    }
+
+    for (let i = startNum; i < endNum + 1; i += diffNum) {
+        ranged.push(toRoman(i) as string)
+    }
+
+    return ranged
+}
+
+console.log(range(22, 3, 5))
