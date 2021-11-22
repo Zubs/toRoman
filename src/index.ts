@@ -141,6 +141,10 @@ export function toRoman (value: number): string | Error {
     if (value >= 4000 || value <= 0) {
         return new Error(`Value cannot be up to 4000`)
     }
+    
+    if(typeof value != "number"){ // Added a conditional to check if value is a number
+        return new Error('Value must be a number')
+    }
 
     // Get number digits with place value
     let thousand = Math.floor(value / 1000)
