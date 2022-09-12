@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/Zubs/toRoman#readme",
   "dependencies": {
-    "jasmine": "^3.9.0"
+    "jasmine": "^3.9.0",
+    "toroman": "^1.1.0"
   },
   "devDependencies": {
     "@types/jasmine": "^3.9.1"
