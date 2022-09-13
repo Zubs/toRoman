@@ -83,4 +83,7 @@ describe('fromRoman', function () {
     it('should return 358 if CCCLVIII is entered', function () {
         expect((0, index_1.fromRoman)('CCCLVIII')).toBe(358);
     });
+    it('should return 3999 if MMMCMXCIX is entered', function () {
+        expect((0, index_1.fromRoman)('MMMCMXCIX')).toBe(3999);
+    });
 });
