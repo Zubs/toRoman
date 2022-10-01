@@ -113,11 +113,14 @@ exports.isRoman = isRoman;
  * @returns { string } Roman numeral representation of the input value
 */
 function toRoman(value) {
-    let romanArray = [];
+    if (typeof value != "number") { // Added a conditional to check if value is a number
+        return new Error('Value must be a number');
+    }
     // Check for valid numbers
     if (value >= 4000 || value <= 0) {
-        return new Error(`Value cannot be up to 4000`);
+        return new Error(`Value cannot be up to 4000 or less than 0`);
     }
+    let romanArray = [];
     // Get number digits with place value
     let thousand = Math.floor(value / 1000);
     let hundred = Math.floor((value % 1000) / 100);
@@ -355,4 +358,3 @@ function range(end, start = 'I', intervals = 'I') {
     return ranged;
 }
 exports.range = range;
-console.log(range(22, 3, 5));
