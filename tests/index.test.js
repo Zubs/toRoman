@@ -171,14 +171,6 @@ describe("diff", () => {
     expect((0, index_1.sum)("number", "III", "XXII", "LXV", "VIII")).toBe(98);
   });
 });
-describe("sum", () => {
-  test("should return X when called with XVII and VIII", () => {
-    expect((0, index_1.diff)("roman", ["XVIII", "VIII"])).toBe("X");
-  });
-  test("should return 98 when called with CXVI and XVIII", () => {
-    expect((0, index_1.diff)("number", ["CXVI", "XVIII"])).toBe(98);
-  });
-});
 describe("range", () => {
   test("should return an array of 100 elements when called with C and I", () => {
     expect((0, index_1.range)("C", "I")).toHaveLength(100);
