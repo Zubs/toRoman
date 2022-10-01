@@ -1,6 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.range = exports.diff = exports.sum = exports.fromRoman = exports.toRoman = exports.isRoman = exports.getCount = void 0;
+exports.range =
+  exports.diff =
+  exports.sum =
+  exports.fromRoman =
+  exports.toRoman =
+  exports.isRoman =
+  exports.getCount =
+    void 0;
 /**
  * Retuns the number of times and element occurs in an array
  * @param { string[] } array Array to be checked
@@ -8,13 +15,13 @@ exports.range = exports.diff = exports.sum = exports.fromRoman = exports.toRoman
  * @return { number } Count of value in array
  */
 function getCount(array, value) {
-    let count = 0;
-    array.forEach((item) => {
-        if (item === value) {
-            count++;
-        }
-    });
-    return count;
+  let count = 0;
+  array.forEach((item) => {
+    if (item === value) {
+      count++;
+    }
+  });
+  return count;
 }
 exports.getCount = getCount;
 /**
@@ -23,244 +30,226 @@ exports.getCount = getCount;
  * @returns { boolean } true or false
  */
 function isRoman(value) {
-    if (!value) {
-        return new Error(`Roman numeral cannot be empty`);
+  if (!value) {
+    return new Error(`Roman numeral cannot be empty`);
+  }
+  // Input must be a string
+  if (typeof value != "string") {
+    return new Error(`Roman numeral must be of type string`);
+  }
+  value = value.toUpperCase();
+  const letters = value.split("");
+  const romans = [
+    ["M", 4],
+    ["D", 1],
+    ["C", 4],
+    ["L", 1],
+    ["X", 4],
+    ["V", 1],
+    ["I", 3],
+  ];
+  const romanLetters = ["M", "D", "C", "L", "X", "V", "I"];
+  // Count rules
+  romans.forEach((letter) => {
+    let count = getCount(letters, letter[0]);
+    if (count && count > letter[1]) {
+      let error = `${letter[0]} cannot appear more than ${letter[1]} times in a value`;
+      return new Error(`${error}`);
     }
-    // Input must be a string
-    if (typeof value != 'string') {
-        return new Error(`Roman numeral must be of type string`);
+  });
+  // Testing single digits
+  if (letters.length < 2) {
+    let letter = letters[0];
+    if (!romanLetters.includes(letter)) {
+      return new Error(`Invalid Roman numeral: ${letter}`);
+    } else {
+      return true;
     }
-    value = value.toUpperCase();
-    const letters = value.split('');
-    const romans = [
-        ['M', 4],
-        ['D', 1],
-        ['C', 4],
-        ['L', 1],
-        ['X', 4],
-        ['V', 1],
-        ['I', 3]
-    ];
-    const romanLetters = ['M', 'D', 'C', 'L', 'X', 'V', 'I'];
-    // Count rules
-    romans.forEach((letter) => {
-        let count = getCount(letters, letter[0]);
-        if (count && count > letter[1]) {
-            let error = `${letter[0]} cannot appear more than ${letter[1]} times in a value`;
-            return new Error(`${error}`);
-        }
-    });
-    // Testing single digits
-    if (letters.length < 2) {
-        let letter = letters[0];
-        if (!romanLetters.includes(letter)) {
-            return new Error(`Invalid Roman numeral: ${letter}`);
-        }
-        else {
-            return true;
-        }
+  }
+  // Correct letters
+  letters.forEach((letter, index) => {
+    if (!romanLetters.includes(letter)) {
+      return new Error(`Invalid Roman numeral: ${letter}`);
     }
-    // Correct letters
-    letters.forEach((letter, index) => {
-        if (!romanLetters.includes(letter)) {
-            return new Error(`Invalid Roman numeral: ${letter}`);
-        }
-        let next = letters[index + 1];
-        // Test for D
-        if (letter === romanLetters[1]) {
-            let badNexts = romanLetters.slice(0, 2);
-            if (badNexts.includes(next)) {
-                return new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
-            }
-        }
-        // Test for L
-        if (letter === romanLetters[3]) {
-            let goodNexts = romanLetters.slice(4, 3);
-            if (!goodNexts.includes(next)) {
-                return new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
-            }
-        }
-        // Test for X
-        if (letter === romanLetters[4]) {
-            let badNexts = romanLetters.slice(0, 2);
-            if (badNexts.includes(next)) {
-                return new Error(`Unexpected token ${next}, ${next} cannot come after ${letter}`);
-            }
-        }
-        // Test for V
-        if (letter === romanLetters[5]) {
-            let goodNexts = [
-                romanLetters[6],
-            ];
-            if (!goodNexts.includes(next)) {
-                return new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
-            }
-        }
-        // Test for I
-        if (letter === romanLetters[6]) {
-            let goodNexts = romanLetters.slice(4, 3);
-            if (!goodNexts.includes(next)) {
-                return new Error(`Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`);
-            }
-        }
-    });
-    return true;
+    let next = letters[index + 1];
+    // Test for D
+    if (letter === romanLetters[1]) {
+      let badNexts = romanLetters.slice(0, 2);
+      if (badNexts.includes(next)) {
+        return new Error(
+          `Unexpected token ${next}, ${next} cannot come after ${letter}`
+        );
+      }
+    }
+    // Test for L
+    if (letter === romanLetters[3]) {
+      let goodNexts = romanLetters.slice(4, 3);
+      if (!goodNexts.includes(next)) {
+        return new Error(
+          `Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`
+        );
+      }
+    }
+    // Test for X
+    if (letter === romanLetters[4]) {
+      let badNexts = romanLetters.slice(0, 2);
+      if (badNexts.includes(next)) {
+        return new Error(
+          `Unexpected token ${next}, ${next} cannot come after ${letter}`
+        );
+      }
+    }
+    // Test for V
+    if (letter === romanLetters[5]) {
+      let goodNexts = [romanLetters[6]];
+      if (!goodNexts.includes(next)) {
+        return new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
+      }
+    }
+    // Test for I
+    if (letter === romanLetters[6]) {
+      let goodNexts = romanLetters.slice(4, 3);
+      if (!goodNexts.includes(next)) {
+        return new Error(
+          `Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`
+        );
+      }
+    }
+  });
+  return true;
 }
 exports.isRoman = isRoman;
 /**
  * Convert an integer to Roman numerals
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
-*/
+ */
 function toRoman(value) {
-    if (typeof value != "number") { // Added a conditional to check if value is a number
-        return new Error('Value must be a number');
+  if (typeof value != "number") {
+    // Added a conditional to check if value is a number
+    return new Error("Value must be a number");
+  }
+  // Check for valid numbers
+  if (value >= 4000 || value <= 0) {
+    return new Error(`Value cannot be up to 4000 or less than 0`);
+  }
+  let romanArray = [];
+  // Get number digits with place value
+  let thousand = Math.floor(value / 1000);
+  let hundred = Math.floor((value % 1000) / 100);
+  let ten = Math.floor((value % 100) / 10);
+  let unit = value % 10;
+  // Sort thousands
+  for (let i = 0; i < thousand; i++) {
+    romanArray.push("M");
+  }
+  // Sort hundreds
+  if (hundred < 4) {
+    for (let i = 0; i < hundred; i++) {
+      romanArray.push("C");
     }
-    // Check for valid numbers
-    if (value >= 4000 || value <= 0) {
-        return new Error(`Value cannot be up to 4000 or less than 0`);
+  } else if (hundred === 4) {
+    romanArray.push("CD");
+  } else if (hundred === 5) {
+    romanArray.push("D");
+  } else if (hundred > 5 && hundred < 9) {
+    romanArray.push("D");
+    for (let i = 0; i < hundred - 5; i++) {
+      romanArray.push("C");
     }
-    let romanArray = [];
-    // Get number digits with place value
-    let thousand = Math.floor(value / 1000);
-    let hundred = Math.floor((value % 1000) / 100);
-    let ten = Math.floor((value % 100) / 10);
-    let unit = value % 10;
-    // Sort thousands
-    for (let i = 0; i < thousand; i++) {
-        romanArray.push('M');
+  } else {
+    romanArray.push("CM");
+  }
+  // Sort tens
+  if (ten < 4) {
+    for (let i = 0; i < ten; i++) {
+      romanArray.push("X");
     }
-    // Sort hundreds
-    if (hundred < 4) {
-        for (let i = 0; i < hundred; i++) {
-            romanArray.push('C');
-        }
+  } else if (ten === 4) {
+    romanArray.push("XL");
+  } else if (ten === 5) {
+    romanArray.push("L");
+  } else if (ten > 5 && ten < 9) {
+    romanArray.push("L");
+    for (let i = 0; i < ten - 5; i++) {
+      romanArray.push("X");
     }
-    else if (hundred === 4) {
-        romanArray.push('CD');
+  } else {
+    romanArray.push("XC");
+  }
+  // Sort units
+  if (unit < 4) {
+    for (let i = 0; i < unit; i++) {
+      romanArray.push("I");
     }
-    else if (hundred === 5) {
-        romanArray.push('D');
+  } else if (unit === 4) {
+    romanArray.push("IV");
+  } else if (unit === 5) {
+    romanArray.push("V");
+  } else if (unit > 5 && unit < 9) {
+    romanArray.push("V");
+    for (let i = 0; i < unit - 5; i++) {
+      romanArray.push("I");
     }
-    else if (hundred > 5 && hundred < 9) {
-        romanArray.push('D');
-        for (let i = 0; i < hundred - 5; i++) {
-            romanArray.push('C');
-        }
-    }
-    else {
-        romanArray.push('CM');
-    }
-    // Sort tens
-    if (ten < 4) {
-        for (let i = 0; i < ten; i++) {
-            romanArray.push('X');
-        }
-    }
-    else if (ten === 4) {
-        romanArray.push('XL');
-    }
-    else if (ten === 5) {
-        romanArray.push('L');
-    }
-    else if (ten > 5 && ten < 9) {
-        romanArray.push('L');
-        for (let i = 0; i < ten - 5; i++) {
-            romanArray.push('X');
-        }
-    }
-    else {
-        romanArray.push('XC');
-    }
-    // Sort units
-    if (unit < 4) {
-        for (let i = 0; i < unit; i++) {
-            romanArray.push('I');
-        }
-    }
-    else if (unit === 4) {
-        romanArray.push('IV');
-    }
-    else if (unit === 5) {
-        romanArray.push('V');
-    }
-    else if (unit > 5 && unit < 9) {
-        romanArray.push('V');
-        for (let i = 0; i < unit - 5; i++) {
-            romanArray.push('I');
-        }
-    }
-    else {
-        romanArray.push('IX');
-    }
-    return romanArray.join('');
+  } else {
+    romanArray.push("IX");
+  }
+  return romanArray.join("");
 }
 exports.toRoman = toRoman;
 /**
  * Convert Roman numeral to integer
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
-*/
+ */
 function fromRoman(value) {
-    let arabNum = 0;
-    if (isRoman(value)) {
-        const letters = value.split('');
-        letters.forEach((letter, index) => {
-            letter = letter.toUpperCase();
-            if (letter === 'M') {
-                arabNum += 1000;
-            }
-            else if (letter === 'D') {
-                arabNum += 500;
-            }
-            else if (letter === 'C') {
-                if (letters[index + 1] === 'M') {
-                    arabNum += 900;
-                    letters.splice(index + 1, 1);
-                }
-                else if (letters[index + 1] === 'D') {
-                    arabNum += 400;
-                    letters.splice(index + 1, 1);
-                }
-                else {
-                    arabNum += 100;
-                }
-            }
-            else if (letter === 'L') {
-                arabNum += 50;
-            }
-            else if (letter === 'X') {
-                if (letters[index + 1] === 'C') {
-                    arabNum += 90;
-                    letters.splice(index + 1, 1);
-                }
-                else if (letters[index + 1] === 'L') {
-                    arabNum += 40;
-                    letters.splice(index + 1, 1);
-                }
-                else {
-                    arabNum += 10;
-                }
-            }
-            else if (letter === 'V') {
-                arabNum += 5;
-            }
-            else if (letter === 'I') {
-                if (letters[index + 1] === 'X') {
-                    arabNum += 9;
-                    letters.splice(index + 1, 1);
-                }
-                else if (letters[index + 1] === 'V') {
-                    arabNum += 4;
-                    letters.splice(index + 1, 1);
-                }
-                else {
-                    arabNum += 1;
-                }
-            }
-        });
-    }
-    return arabNum;
+  let arabNum = 0;
+  if (isRoman(value)) {
+    const letters = value.split("");
+    letters.forEach((letter, index) => {
+      letter = letter.toUpperCase();
+      if (letter === "M") {
+        arabNum += 1000;
+      } else if (letter === "D") {
+        arabNum += 500;
+      } else if (letter === "C") {
+        if (letters[index + 1] === "M") {
+          arabNum += 900;
+          letters.splice(index + 1, 1);
+        } else if (letters[index + 1] === "D") {
+          arabNum += 400;
+          letters.splice(index + 1, 1);
+        } else {
+          arabNum += 100;
+        }
+      } else if (letter === "L") {
+        arabNum += 50;
+      } else if (letter === "X") {
+        if (letters[index + 1] === "C") {
+          arabNum += 90;
+          letters.splice(index + 1, 1);
+        } else if (letters[index + 1] === "L") {
+          arabNum += 40;
+          letters.splice(index + 1, 1);
+        } else {
+          arabNum += 10;
+        }
+      } else if (letter === "V") {
+        arabNum += 5;
+      } else if (letter === "I") {
+        if (letters[index + 1] === "X") {
+          arabNum += 9;
+          letters.splice(index + 1, 1);
+        } else if (letters[index + 1] === "V") {
+          arabNum += 4;
+          letters.splice(index + 1, 1);
+        } else {
+          arabNum += 1;
+        }
+      }
+    });
+  }
+  return arabNum;
 }
 exports.fromRoman = fromRoman;
 /**
@@ -270,13 +259,13 @@ exports.fromRoman = fromRoman;
  * @returns { string | number } Final roman numeral
  */
 function sum(expected, ...args) {
-    let sum = 0;
-    args.forEach((numeral) => {
-        if (isRoman(numeral) === true) {
-            sum += fromRoman(numeral);
-        }
-    });
-    return expected === 'number' ? sum : toRoman(sum);
+  let sum = 0;
+  args.forEach((numeral) => {
+    if (isRoman(numeral) === true) {
+      sum += fromRoman(numeral);
+    }
+  });
+  return expected === "number" ? sum : toRoman(sum);
 }
 exports.sum = sum;
 /**
@@ -286,14 +275,14 @@ exports.sum = sum;
  * @returns { string | number }
  */
 function diff(expected, numerals) {
-    let sum = 0;
-    if (numerals.length > 2) {
-        return new Error('Cannot subtract more than 2 numerals');
-    }
-    if (isRoman(numerals[0]) && isRoman(numerals[1])) {
-        sum = Math.abs(fromRoman(numerals[0]) - fromRoman(numerals[1]));
-    }
-    return expected === 'number' ? sum : toRoman(sum);
+  let sum = 0;
+  if (numerals.length > 2) {
+    return new Error("Cannot subtract more than 2 numerals");
+  }
+  if (isRoman(numerals[0]) && isRoman(numerals[1])) {
+    sum = Math.abs(fromRoman(numerals[0]) - fromRoman(numerals[1]));
+  }
+  return expected === "number" ? sum : toRoman(sum);
 }
 exports.diff = diff;
 /**
@@ -302,59 +291,53 @@ exports.diff = diff;
  * @param start { string | number } Value to start from
  * @param intervals { string | number } Difference between values
  */
-function range(end, start = 'I', intervals = 'I') {
-    let endNum = 1;
-    let startNum = 1;
-    let diffNum = 1;
-    let ranged = [];
-    // Validate end value
-    if (typeof end === 'string') {
-        if (isRoman(end)) {
-            endNum = fromRoman(end);
-        }
+function range(end, start = "I", intervals = "I") {
+  let endNum = 1;
+  let startNum = 1;
+  let diffNum = 1;
+  let ranged = [];
+  // Validate end value
+  if (typeof end === "string") {
+    if (isRoman(end)) {
+      endNum = fromRoman(end);
     }
-    else if (typeof end === 'number') {
-        if (end >= 4000 || end <= 0) {
-            return new Error('Range has to be between 1 and 3999');
-        }
-        endNum = end;
+  } else if (typeof end === "number") {
+    if (end >= 4000 || end <= 0) {
+      return new Error("Range has to be between 1 and 3999");
     }
-    else {
-        return new Error('End value must be a string or number');
+    endNum = end;
+  } else {
+    return new Error("End value must be a string or number");
+  }
+  // Validate start value
+  if (start && typeof start === "string") {
+    if (isRoman(start)) {
+      startNum = fromRoman(start);
     }
-    // Validate start value
-    if (start && typeof start === 'string') {
-        if (isRoman(start)) {
-            startNum = fromRoman(start);
-        }
+  } else if (start && typeof start === "number") {
+    if (start >= 4000 || start <= 0) {
+      return new Error("Range has to be between 1 and 3999");
     }
-    else if (start && typeof start === 'number') {
-        if (start >= 4000 || start <= 0) {
-            return new Error('Range has to be between 1 and 3999');
-        }
-        startNum = start;
+    startNum = start;
+  } else {
+    return new Error("Start value must be a string or number");
+  }
+  // Validate interval value
+  if (intervals && typeof intervals === "string") {
+    if (isRoman(intervals)) {
+      diffNum = fromRoman(intervals);
     }
-    else {
-        return new Error('Start value must be a string or number');
+  } else if (intervals && typeof intervals === "number") {
+    if (intervals >= 4000 || intervals <= 0) {
+      return new Error("Range has to be between 1 and 3999");
     }
-    // Validate interval value
-    if (intervals && typeof intervals === 'string') {
-        if (isRoman(intervals)) {
-            diffNum = fromRoman(intervals);
-        }
-    }
-    else if (intervals && typeof intervals === 'number') {
-        if (intervals >= 4000 || intervals <= 0) {
-            return new Error('Range has to be between 1 and 3999');
-        }
-        diffNum = intervals;
-    }
-    else {
-        return new Error('Start value must be a string or number');
-    }
-    for (let i = startNum; i < endNum + 1; i += diffNum) {
-        ranged.push(toRoman(i));
-    }
-    return ranged;
+    diffNum = intervals;
+  } else {
+    return new Error("Start value must be a string or number");
+  }
+  for (let i = startNum; i < endNum + 1; i += diffNum) {
+    ranged.push(toRoman(i));
+  }
+  return ranged;
 }
 exports.range = range;
