@@ -135,16 +135,16 @@ export function isRoman (value: string): true | Error {
 */
 export function toRoman (value: number): string | Error {
 
-    let romanArray: string[] = []
-
-    // Check for valid numbers
-    if (value >= 4000 || value <= 0) {
-        return new Error(`Value cannot be up to 4000`)
-    }
-    
     if(typeof value != "number"){ // Added a conditional to check if value is a number
         return new Error('Value must be a number')
     }
+
+    // Check for valid numbers
+    if (value >= 4000 || value <= 0) {
+        return new Error(`Value cannot be up to 4000 or less than 0`)
+    }
+
+    let romanArray: string[] = []
 
     // Get number digits with place value
     let thousand = Math.floor(value / 1000)
@@ -299,7 +299,7 @@ export function sum (expected: 'number' | 'roman', ...args: string[]): general |
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
  */
-export function diff (expected: 'number' | 'roman', numerals: string[]): general | Error {
+export function diff (expected: 'number' | 'roman', numerals: [string, string]): general | Error {
     let sum = 0
 
     if (numerals.length > 2) {
@@ -376,5 +376,3 @@ export function range (end: general, start: general = 'I', intervals: general = 
 
     return ranged
 }
-
-console.log(range(22, 3, 5))
