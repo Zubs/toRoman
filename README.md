@@ -67,7 +67,7 @@ export function isRoman(value: string): true | Error {}
 
 <b>Example</b>
 
-```
+```js
 console.log(roman.isRoman('MMMCCXXXIV'))
 
 // Returns true
