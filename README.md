@@ -1,22 +1,33 @@
 # toroman
 
-This library is a very lightweight library for converting Arabic numerals to roman numerals, converting roman numerals to Arabic numerals, and validating roman numerals.
+A minimalist library for Roman numeral operations.
 
-## Installation
+## 🚀 Features
 
-It can be installed using npm:
+- Convert Arabic numerals to Roman numerals Ⅶ
+- Convert Roman numerals to Arabic numerals 🔢
+- Validate Roman numerals ✅
+- Add Roman numerals ➕
+- Subtract Roman numerals ➖
+- Get Roman numerals within a range 📡
+
+## 📦 Installation
+
+It can be installed with npm.
 
 ```sh
 npm i toroman
 ```
 
+## 📥 Usage
+
 ```js
 const roman = require("toRoman");
 ```
 
-### Methods
+<!-- ### 🔩 Methods -->
 
-#### Convert integer to roman numerals, `toRoman`.
+#### 🔄 Convert integer to Roman numerals: `toRoman`
 
 ```js
 /**
@@ -27,7 +38,7 @@ const roman = require("toRoman");
 function toRoman(value: number): string | Error {}
 ```
 
-<b>Example</b>
+🔵 <b>Example</b>
 
 ```js
 console.log(roman.toRoman(765));
@@ -35,7 +46,7 @@ console.log(roman.toRoman(765));
 // Returns DCCLXV
 ```
 
-#### Convert roman numeral to integer
+#### 🔁 Convert Roman numeral to integer: `fromRoman`
 
 ```js
 /**
@@ -46,7 +57,7 @@ console.log(roman.toRoman(765));
 export function fromRoman(value: string): number | Error {}
 ```
 
-<b>Example</b>
+🔵 <b>Example</b>
 
 ```js
 console.log(roman.fromRoman("DCCLXV"));
@@ -54,31 +65,31 @@ console.log(roman.fromRoman("DCCLXV"));
 // Returns 765
 ```
 
-#### Confirm if string is valid roman numeral
+#### 🔍 Confirm if string is valid Roman numeral: `isRoman`
 
 ```js
 /**
- * isRoman - Confirm that string is a valid roman numeral
+ * isRoman - Confirm that string is a valid Roman numeral
  * @param { string } value String to be tested
  * @returns { boolean } true or false
  */
 export function isRoman(value: string): true | Error {}
 ```
 
-<b>Example</b>
+🔵 <b>Example</b>
 
 ```js
-console.log(roman.isRoman('MMMCCXXXIV'))
+console.log(roman.isRoman("MMMCCXXXIV"));
 
 // Returns true
 ```
 
-#### Sum roman numerals and get output as roman numeral or numbers
+#### ➕ Sum Roman numerals and get output as Roman numeral or numbers: `sum`
 
 ```js
 /**
  * @param args Roman numerals to be added
- * @returns { string } Final roman numeral
+ * @returns { string } Final Roman numeral
  */
 export function sum(
   expected: "number" | "roman",
@@ -86,7 +97,7 @@ export function sum(
 ): string | number | Error {}
 ```
 
-<b>Example</b>
+🔵 <b>Example</b>
 
 ```js
 console.log(roman.sum("number", "X", "MXC"));
@@ -94,7 +105,7 @@ console.log(roman.sum("number", "X", "MXC"));
 // Returns 1100
 ```
 
-#### Get difference between two roman numerals and get output as roman numeral or numbers
+#### ➖ Get difference between two Roman numerals and get output as Roman numeral or numbers: `diff`
 
 ```js
 /**
@@ -105,7 +116,7 @@ console.log(roman.sum("number", "X", "MXC"));
 export function diff(expected: "number" | "roman", numerals: string[]) {}
 ```
 
-<b>Example</b>
+🔵 <b>Example</b>
 
 ```js
 console.log(roman.diff("number", ["X", "MXC"]));
@@ -113,11 +124,11 @@ console.log(roman.diff("number", ["X", "MXC"]));
 // Returns 1080
 ```
 
-#### Get a range of roman numerals
+#### 📡 Get a range of Roman numerals: `range`
 
 ```js
 /**
- * Get range of roman numerals
+ * Get range of Roman numerals
  * @param end { string | number } Value to stop at
  * @param start { string | number } Value to start from
  * @param intervals { string | number } Difference between values
@@ -129,7 +140,7 @@ export function range(
 ): string[] | Error {}
 ```
 
-<b>Examples</b>
+🔵 <b>Examples</b>
 
 ```js
 console.log(roman.range(7));
@@ -161,6 +172,6 @@ console.log(roman.range(22, 3, 5));
 // Returns [ 'III', 'VIII', 'XIII', 'XVIII' ]
 ```
 
-### Found this project useful?
+### ✨ Found this project useful?
 
-If you found this project useful or you like what you see, then please consider giving it a :star: on Github and sharing it with your friends via social media.
+If you found this project useful or you like what you see, then please consider giving it a :star: on Github and sharing it with your social media folks 🙂.
