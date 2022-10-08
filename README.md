@@ -1,6 +1,6 @@
 # toroman
 
-A minimalist library for Roman numeral conversion.
+A minimalist library for Roman numeral operations.
 
 ## 🚀 Features
 
