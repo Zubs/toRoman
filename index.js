@@ -31,11 +31,11 @@ exports.getCount = getCount;
  */
 function isRoman(value) {
   if (!value) {
-    return new Error(`Roman numeral cannot be empty`);
+    return new Error("Roman numeral cannot be empty");
   }
   // Input must be a string
   if (typeof value != "string") {
-    return new Error(`Roman numeral must be of type string`);
+    return new Error("Roman numeral must be of type string");
   }
   value = value.toUpperCase();
   const letters = value.split("");
@@ -131,7 +131,7 @@ function toRoman(value) {
   }
   // Check for valid numbers
   if (value >= 4000 || value <= 0) {
-    return new Error(`Value cannot be up to 4000 or less than 0`);
+    return new Error("Value cannot be up to 4000 or less than 0");
   }
   let romanArray = [];
   // Get number digits with place value
