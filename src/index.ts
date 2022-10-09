@@ -25,12 +25,12 @@ export function getCount(array: string[], value: general): number {
  */
 export function isRoman(value: string): true | Error {
   if (!value) {
-    return new Error(`Roman numeral cannot be empty`);
+    return new Error("Roman numeral cannot be empty");
   }
 
   // Input must be a string
   if (typeof value != "string") {
-    return new Error(`Roman numeral must be of type string`);
+    return new Error("Roman numeral must be of type string");
   }
 
   value = value.toUpperCase();
@@ -145,7 +145,7 @@ export function toRoman(value: number): string | Error {
 
   // Check for valid numbers
   if (value >= 4000 || value <= 0) {
-    return new Error(`Value cannot be up to 4000 or less than 0`);
+    return new Error("Value cannot be up to 4000 or less than 0");
   }
 
   let romanArray: string[] = [];
@@ -224,7 +224,7 @@ export function toRoman(value: number): string | Error {
  * @returns { number } Integer representation of the input value
  */
 export function fromRoman(value: string): number | Error {
-  let arabNum = 0;
+  let arabNum: number = 0;
 
   if (isRoman(value)) {
     const letters: string[] = value.split("");
