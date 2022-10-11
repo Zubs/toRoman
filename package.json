@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest tests/*.test.js",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "format": "prettier --write \"**/*.{js,jsx,json,css,md}\""
   },
   "repository": {
     "type": "git",
