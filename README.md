@@ -1,13 +1,13 @@
-Library [![Build Status](https://cloud.drone.io/api/badges/nytimes/library/status.svg)](https://cloud.drone.io/nytimes/library) !
+### ToRoman
+[![Build Status](https://cloud.drone.io/api/badges/nytimes/library/status.svg)](https://cloud.drone.io/nytimes/library) 
 
-========
 
 **Table of Contents**
 
 - [Making a Contribution](#contribution)
-- [Features](#🚀 Features)
-- [Installation](#📦 Installation)
-- [Usage](#📥 Usage)
+- [Features](#🚀Features)
+- [Installation](#📦Installation)
+- [Usage](#📥Usage)
     - [Convert Integer to Roman Numerals](#convertintegertoromannumerals)
      - [Convert  Roman Numerals to Integer](#convertromannumeralstointeger)
 - [Found this project useful](#Foundthisprojectuseful)
@@ -23,7 +23,7 @@ read our contributing.md docs first before you make your first contribution.
 
 oya abeg read our contributing.md docs first before you push rubbish.
 
-## 🚀 Features
+## 🚀 FEATURES
 
 - Convert Arabic numerals to Roman numerals Ⅶ
 - Convert Roman numerals to Arabic numerals 🔢
