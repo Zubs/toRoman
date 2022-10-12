@@ -1,13 +1,13 @@
 Library [![Build Status](https://cloud.drone.io/api/badges/nytimes/library/status.svg)](https://cloud.drone.io/nytimes/library) !
-[Supported node versions](https://img.shields.io/badge/dynamic/json?color=informational&label=node&query=%24.engines.node&url=https%3A%2F%2Fraw.githubusercontent.com%2Fnytimes%2Flibrary%2Fmain%2Fpackage.json)
+
 ========
 
 **Table of Contents**
 
 - [Making a Contribution](#contribution)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
+- [Features](#🚀 Features)
+- [Installation](#📦 Installation)
+- [Usage](#📥 Usage)
     - [Convert Integer to Roman Numerals](#convertintegertoromannumerals)
      - [Convert  Roman Numerals to Integer](#convertromannumeralstointeger)
 - [Found this project useful](#Foundthisprojectuseful)
