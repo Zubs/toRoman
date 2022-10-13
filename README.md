@@ -1,5 +1,4 @@
-### ToRoman
-[![Build Status](https://cloud.drone.io/api/badges/nytimes/library/status.svg)](https://cloud.drone.io/nytimes/library) 
+          ### ToRoman
 
 
 **Table of Contents**
@@ -11,9 +10,9 @@
     - [Convert Integer to Roman Numerals](#convertintegertoromannumerals)
      - [Convert  Roman Numerals to Integer](#convertromannumeralstointeger)
 - [Found this project useful](#Foundthisprojectuseful)
+
 # toroman
 
-A minimalist library for Roman numeral operations.
 A Minimal Library for Roman Numeral Operations.
 
 ## CONTRIBUTION
@@ -21,7 +20,6 @@ A Minimal Library for Roman Numeral Operations.
 I know you find this project amazing and beautiful i know that feeling there but Please do take your time to 
 read our contributing.md docs first before you make your first contribution.
 
-oya abeg read our contributing.md docs first before you push rubbish.
 
 ## 🚀 FEATURES
 
@@ -34,13 +32,8 @@ oya abeg read our contributing.md docs first before you push rubbish.
 
 ## 📦 Installation
 To get started with ToRoman,
- you need NPM already installed or you can do
-```sh
-  npm install
-  ```
-Next, type :
-
-```sh
+ 
+ ```sh
 npm i toroman
 ```
 
@@ -202,6 +195,7 @@ console.log(roman.range(22, 3, 5));
 ### DISCLAIMER
 
 Any statement in this repository that is not purely historical is considered a forward-looking statement. Forward-looking statements included in this repository are based on information available to GitHub as of the date they are made, and GitHub assumes no obligation to update any forward-looking statements. The forward-looking comments in the public feedback discussions do not represent a commitment, guarantee, obligation or promise to deliver any product or feature, or to deliver any product and feature by any particular date, and is intended to outline the general development plans. Customers should not rely on these public feedback discussions to make any purchasing decision.
+
 ### ✨ Found this project useful?
 
 If you found this project useful or you like what you see, then please consider giving it a :star: on Github and sharing it with your social media folks 🙂.
