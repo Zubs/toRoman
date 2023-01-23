@@ -1,5 +1,7 @@
 # toroman
 
+[![wakatime](https://wakatime.com/badge/github/Zubs/toRoman.svg)](https://wakatime.com/badge/github/Zubs/toRoman)
+
 A minimalist library for Roman numeral operations.
 
 ## 🚀 Features
