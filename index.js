@@ -33,8 +33,8 @@ function isRoman(value) {
   if (!value) {
     return new Error("Roman numeral cannot be empty");
   }
-  // Input must be a string
-  if (typeof value != "string") {
+  // Input must be a string and not be a number
+  if (typeof value !== "string" || Number(value)) {
     return new Error("Roman numeral must be of type string");
   }
   value = value.toUpperCase();

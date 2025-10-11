@@ -19,10 +19,19 @@ describe("isRoman", () => {
       expect(error.message).toBe("Roman numeral cannot be empty");
     }
   });
-  test("should throw an error if input is not a string", () => {
+  test("should throw an error if input is not a string I", () => {
     try {
       // @ts-ignore
-      (0, index_1.isRoman)(234);
+      (0, index_1.isRoman)(1234);
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe("Roman numeral must be of type string");
+    }
+  });
+  test("should throw an error if input is not a string II", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.isRoman)("1234");
     } catch (error) {
       // @ts-ignore
       expect(error.message).toBe("Roman numeral must be of type string");
