@@ -9,10 +9,10 @@ exports.range =
   exports.getCount =
     void 0;
 /**
- * Retuns the number of times and element occurs in an array
+ * Returns the number of times an element occurs in an array
  * @param { string[] } array Array to be checked
  * @param { string | number } value string or number to be counted
- * @return { number } Count of value in array
+ * @return { number } Count of value in an array
  */
 function getCount(array, value) {
   let count = 0;
@@ -50,13 +50,15 @@ function isRoman(value) {
   ];
   const romanLetters = ["M", "D", "C", "L", "X", "V", "I"];
   // Count rules
-  romans.forEach((letter) => {
-    let count = getCount(letters, letter[0]);
-    if (count && count > letter[1]) {
-      let error = `${letter[0]} cannot appear more than ${letter[1]} times in a value`;
-      return new Error(`${error}`);
+  for (let i = 0; i < romans.length; i++) {
+    const [char, maxCount] = romans[i];
+    const count = getCount(letters, char);
+    if (count && count > maxCount) {
+      return new Error(
+        `${char} cannot appear more than ${maxCount} times in a value`
+      );
     }
-  });
+  }
   // Testing single digits
   if (letters.length < 2) {
     let letter = letters[0];
@@ -125,76 +127,35 @@ exports.isRoman = isRoman;
  * @returns { string } Roman numeral representation of the input value
  */
 function toRoman(value) {
-  if (typeof value != "number") {
-    // Added a conditional to check if value is a number
-    return new Error("Value must be a number");
+  if (!Number.isInteger(value)) {
+    throw new Error("Value must be of type number");
   }
-  // Check for valid numbers
-  if (value >= 4000 || value <= 0) {
-    return new Error("Value cannot be up to 4000 or less than 0");
+  if (value <= 0 || value >= 4000) {
+    throw new Error("Value cannot be up to 4000 or less than 0");
   }
-  let romanArray = [];
-  // Get number digits with place value
-  let thousand = Math.floor(value / 1000);
-  let hundred = Math.floor((value % 1000) / 100);
-  let ten = Math.floor((value % 100) / 10);
-  let unit = value % 10;
-  // Sort thousands
-  for (let i = 0; i < thousand; i++) {
-    romanArray.push("M");
+  let result = "";
+  const romanMap = [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  for (const [num, numeral] of romanMap) {
+    while (value >= num) {
+      result += numeral;
+      value -= num;
+    }
   }
-  // Sort hundreds
-  if (hundred < 4) {
-    for (let i = 0; i < hundred; i++) {
-      romanArray.push("C");
-    }
-  } else if (hundred === 4) {
-    romanArray.push("CD");
-  } else if (hundred === 5) {
-    romanArray.push("D");
-  } else if (hundred > 5 && hundred < 9) {
-    romanArray.push("D");
-    for (let i = 0; i < hundred - 5; i++) {
-      romanArray.push("C");
-    }
-  } else {
-    romanArray.push("CM");
-  }
-  // Sort tens
-  if (ten < 4) {
-    for (let i = 0; i < ten; i++) {
-      romanArray.push("X");
-    }
-  } else if (ten === 4) {
-    romanArray.push("XL");
-  } else if (ten === 5) {
-    romanArray.push("L");
-  } else if (ten > 5 && ten < 9) {
-    romanArray.push("L");
-    for (let i = 0; i < ten - 5; i++) {
-      romanArray.push("X");
-    }
-  } else {
-    romanArray.push("XC");
-  }
-  // Sort units
-  if (unit < 4) {
-    for (let i = 0; i < unit; i++) {
-      romanArray.push("I");
-    }
-  } else if (unit === 4) {
-    romanArray.push("IV");
-  } else if (unit === 5) {
-    romanArray.push("V");
-  } else if (unit > 5 && unit < 9) {
-    romanArray.push("V");
-    for (let i = 0; i < unit - 5; i++) {
-      romanArray.push("I");
-    }
-  } else {
-    romanArray.push("IX");
-  }
-  return romanArray.join("");
+  return result;
 }
 exports.toRoman = toRoman;
 /**
