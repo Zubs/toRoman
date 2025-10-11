@@ -48,13 +48,13 @@ export function isRoman(value: string): true | Error {
     const romanLetters: string[] = ["M", "D", "C", "L", "X", "V", "I"];
 
     // Count rules
-    romans.forEach((letter) => {
-        let count = getCount(letters, letter[0]);
-        if (count && count > letter[1]) {
-            let error = `${letter[0]} cannot appear more than ${letter[1]} times in a value`;
-            return new Error(`${error}`);
+    for (let i = 0; i < romans.length; i++) {
+        const [char, maxCount] = romans[i];
+        const count = getCount(letters, char);
+        if (count && count > maxCount) {
+            return new Error(`${char} cannot appear more than ${maxCount} times in a value`);
         }
-    });
+    }
 
     // Testing single digits
     if (letters.length < 2) {
