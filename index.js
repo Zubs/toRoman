@@ -5,14 +5,15 @@ exports.range =
   exports.sum =
   exports.fromRoman =
   exports.toRoman =
+  exports.toRomans =
   exports.isRoman =
   exports.getCount =
     void 0;
 /**
- * Retuns the number of times and element occurs in an array
+ * Returns the number of times an element occurs in an array
  * @param { string[] } array Array to be checked
  * @param { string | number } value string or number to be counted
- * @return { number } Count of value in array
+ * @return { number } Count of value in an array
  */
 function getCount(array, value) {
   let count = 0;
@@ -124,14 +125,14 @@ exports.isRoman = isRoman;
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
  */
-function toRoman(value) {
+function toRomans(value) {
   if (typeof value != "number") {
     // Added a conditional to check if value is a number
-    return new Error("Value must be a number");
+    return new Error("Input must be a number");
   }
   // Check for valid numbers
   if (value >= 4000 || value <= 0) {
-    return new Error("Value cannot be up to 4000 or less than 0");
+    return new Error("Input cannot be up to 4000 or less than 0");
   }
   let romanArray = [];
   // Get number digits with place value
@@ -195,6 +196,43 @@ function toRoman(value) {
     romanArray.push("IX");
   }
   return romanArray.join("");
+}
+exports.toRomans = toRomans;
+/**
+ * toRoman - Convert an integer to Roman numerals
+ * @param value Integer to convert (1–3999)
+ * @returns Roman numeral string
+ */
+function toRoman(value) {
+  if (!Number.isInteger(value)) {
+    throw new Error("Value must be of type number");
+  }
+  if (value <= 0 || value >= 4000) {
+    throw new Error("Value cannot be up to 4000 or less than 0");
+  }
+  let result = "";
+  const romanMap = [
+    [1000, "M"],
+    [900, "CM"],
+    [500, "D"],
+    [400, "CD"],
+    [100, "C"],
+    [90, "XC"],
+    [50, "L"],
+    [40, "XL"],
+    [10, "X"],
+    [9, "IX"],
+    [5, "V"],
+    [4, "IV"],
+    [1, "I"],
+  ];
+  for (const [num, numeral] of romanMap) {
+    while (value >= num) {
+      result += numeral;
+      value -= num;
+    }
+  }
+  return result;
 }
 exports.toRoman = toRoman;
 /**
