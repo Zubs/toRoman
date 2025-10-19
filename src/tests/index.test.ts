@@ -9,7 +9,7 @@ import {
     sum,
     toRoman,
     max,
-    min, random
+    min, random, table
 } from "../index";
 
 describe("getCount", () => {
@@ -503,3 +503,133 @@ describe("random", () => {
         expect(fromRoman(result)).toBeLessThanOrEqual(3999);
     });
 });
+
+describe("table", () => {
+    test("should throw error on invalid start", () => {
+        try {
+            // @ts-ignore
+            table([43]);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Start value must be a number or string");
+        }
+    });
+
+    test("should throw error on invalid start (number)", () => {
+        try {
+            // @ts-ignore
+            table(4897);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Start value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid start (roman)", () => {
+        try {
+            // @ts-ignore
+            table("MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Start value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid start (roman) II", () => {
+        try {
+            // @ts-ignore
+            table("VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
+    });
+
+    test("should throw error on invalid end", () => {
+        try {
+            // @ts-ignore
+            table(100, {});
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("End value must be a number or string");
+        }
+    });
+
+    test("should throw error on invalid end (number)", () => {
+        try {
+            // @ts-ignore
+            table(300, -23);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("End value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid end (roman)", () => {
+        try {
+            // @ts-ignore
+            table(300, "MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("End value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid end (roman) II", () => {
+        try {
+            // @ts-ignore
+            table(230, "VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
+    });
+
+    test("should throw error when start is greater than end", () => {
+        try {
+            table("X", "V");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Start value must be less than or equal to end value");
+        }
+    });
+
+    test("should return a table from I to X", () => {
+        const result = table("I", "x");
+        expect(result).toEqual([
+            {number: 1, roman: "I"},
+            {number: 2, roman: "II"},
+            {number: 3, roman: "III"},
+            {number: 4, roman: "IV"},
+            {number: 5, roman: "V"},
+            {number: 6, roman: "VI"},
+            {number: 7, roman: "VII"},
+            {number: 8, roman: "VIII"},
+            {number: 9, roman: "IX"},
+            {number: 10, roman: "X"},
+        ]);
+    });
+
+    test("should return a table from 98 to 114", () => {
+        const result = table(98, 114);
+        expect(result).toEqual([
+            {number: 98, roman: "XCVIII"},
+            {number: 99, roman: "XCIX"},
+            {number: 100, roman: "C"},
+            {number: 101, roman: "CI"},
+            {number: 102, roman: "CII"},
+            {number: 103, roman: "CIII"},
+            {number: 104, roman: "CIV"},
+            {number: 105, roman: "CV"},
+            {number: 106, roman: "CVI"},
+            {number: 107, roman: "CVII"},
+            {number: 108, roman: "CVIII"},
+            {number: 109, roman: "CIX"},
+            {number: 110, roman: "CX"},
+            {number: 111, roman: "CXI"},
+            {number: 112, roman: "CXII"},
+            {number: 113, roman: "CXIII"},
+            {number: 114, roman: "CXIV"},
+        ]);
+    })
+})

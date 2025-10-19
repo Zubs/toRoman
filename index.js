@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.random =
+exports.table =
+  exports.random =
   exports.min =
   exports.max =
   exports.divide =
@@ -440,3 +441,46 @@ function random(max = 3999, min = 1) {
   return toRoman(randomNum);
 }
 exports.random = random;
+function table(start, end) {
+  const result = [];
+  let startNum = 1;
+  let endNum = 1;
+  if (typeof start === "number") {
+    startNum = start;
+    if (startNum > 3999 || startNum <= 0) {
+      throw new Error("Start value must be between 1 and 3999");
+    }
+  } else if (typeof start === "string") {
+    if (isRoman(start)) {
+      startNum = fromRoman(start);
+      if (startNum > 3999 || startNum <= 0) {
+        throw new Error("Start value must be between 1 and 3999");
+      }
+    }
+  } else {
+    throw new Error("Start value must be a number or string");
+  }
+  if (typeof end === "number") {
+    endNum = end;
+    if (endNum > 3999 || endNum <= 0) {
+      throw new Error("End value must be between 1 and 3999");
+    }
+  } else if (typeof end === "string") {
+    if (isRoman(end)) {
+      endNum = fromRoman(end);
+      if (endNum > 3999 || endNum <= 0) {
+        throw new Error("End value must be between 1 and 3999");
+      }
+    }
+  } else {
+    throw new Error("End value must be a number or string");
+  }
+  if (startNum > endNum) {
+    throw new Error("Start value must be less than or equal to end value");
+  }
+  for (let i = startNum; i <= endNum; i++) {
+    result.push({ number: i, roman: toRoman(i) });
+  }
+  return result;
+}
+exports.table = table;

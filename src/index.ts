@@ -21,6 +21,10 @@ export function getCount(
     return count;
 }
 
+export function validateGeneral(input: general): number {
+    return 5;
+}
+
 /**
  * Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
@@ -515,4 +519,66 @@ export function random(
     const randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
 
     return toRoman(randomNum);
+}
+
+/**
+ * Generate a table of Roman numerals within a specified range
+ * @param start Starting point for table
+ * @param end Stopping point for table
+ * @returns { number: number; roman: string }[] Array of objects containing number and its Roman numeral representation
+ * @throws { Error } When the inputs are invalid or out of range
+ */
+export function table(
+    start: general,
+    end: general
+): { number: number; roman: string }[] {
+    const result: { number: number; roman: string }[] = [];
+    let startNum: number = 1;
+    let endNum: number = 1;
+
+    if (typeof start === "number") {
+        startNum = start;
+
+        if (startNum > 3999 || startNum <= 0) {
+            throw new Error("Start value must be between 1 and 3999");
+        }
+    } else if (typeof start === "string") {
+        if (isRoman(start)) {
+            startNum = fromRoman(start) as number;
+
+            if (startNum > 3999 || startNum <= 0) {
+                throw new Error("Start value must be between 1 and 3999");
+            }
+        }
+    } else {
+        throw new Error("Start value must be a number or string");
+    }
+
+    if (typeof end === "number") {
+        endNum = end;
+
+        if (endNum > 3999 || endNum <= 0) {
+            throw new Error("End value must be between 1 and 3999");
+        }
+    } else if (typeof end === "string") {
+        if (isRoman(end)) {
+            endNum = fromRoman(end) as number;
+
+            if (endNum > 3999 || endNum <= 0) {
+                throw new Error("End value must be between 1 and 3999");
+            }
+        }
+    } else {
+        throw new Error("End value must be a number or string");
+    }
+
+    if (startNum > endNum) {
+        throw new Error("Start value must be less than or equal to end value");
+    }
+
+    for (let i = startNum; i <= endNum; i++) {
+        result.push({ number: i, roman: toRoman(i) as string });
+    }
+
+    return result;
 }
