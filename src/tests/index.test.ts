@@ -9,7 +9,7 @@ import {
     sum,
     toRoman,
     max,
-    min, random, table, validateGeneral
+    min, random, table, validateGeneral, nextRoman, map, previousRoman
 } from "../index";
 
 describe("getCount", () => {
@@ -691,5 +691,26 @@ describe("validateGeneral", () => {
             // @ts-ignore
             expect(error.message).toBe("Unexpected token J, expected either X, V or I");
         }
+    });
+});
+
+describe("nextRoman", () => {
+    test("should return II when I is given", () => {
+        expect(nextRoman("I")).toBe("II");
+    });
+});
+
+describe("previousRoman", () => {
+    test("should return I when II is given", () => {
+        expect(previousRoman("II")).toBe("I");
+    });
+});
+
+describe("map", () => {
+    test("should map an array of numbers to roman numerals", () => {
+        const input = [1, 2, 3, 4, 5];
+        const expected = ["I", "II", "III", "IV", "V"];
+        const result = map("roman", input);
+        expect(result).toEqual(expected);
     });
 });

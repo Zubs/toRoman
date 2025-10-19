@@ -610,3 +610,21 @@ describe("validateGeneral", () => {
     }
   });
 });
+describe("nextRoman", () => {
+  test("should return II when I is given", () => {
+    expect((0, index_1.nextRoman)("I")).toBe("II");
+  });
+});
+describe("previousRoman", () => {
+  test("should return I when II is given", () => {
+    expect((0, index_1.previousRoman)("II")).toBe("I");
+  });
+});
+describe("map", () => {
+  test("should map an array of numbers to roman numerals", () => {
+    const input = [1, 2, 3, 4, 5];
+    const expected = ["I", "II", "III", "IV", "V"];
+    const result = (0, index_1.map)("roman", input);
+    expect(result).toEqual(expected);
+  });
+});

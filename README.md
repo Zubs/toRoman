@@ -302,6 +302,67 @@ console.log(roman.range(7));
 // Returns [ 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII' ]
 ```
 
+### ⏭️ Get the next Roman numeral: `nextRoman`
+
+```ts
+/**
+ * Get the next Roman numeral
+ * @param value Current Roman numeral
+ * @returns { string } Next Roman numeral
+ * @throws { Error } When the input is invalid or out of range
+ */
+export function nextRoman(value: string): string {}
+```
+
+🔵 <b>Example</b>
+
+```js
+console.log(roman.nextRoman("XIV"));
+
+// Returns XV
+```
+
+### ⏮️ Get the previous Roman numeral: `prevRoman`
+
+```ts
+/**
+ * Get the previous Roman numeral
+ * @param value Current Roman numeral
+ * @returns { string } Previous Roman numeral
+ * @throws { Error } When the input is invalid or out of range
+ */
+export function previousRoman(value: string): string {}
+```
+
+🔵 <b>Example</b>
+
+```js
+console.log(roman.previousRoman("XIV"));
+
+// Returns XIII
+```
+
+### 🔀 Map an array of general inputs to either numbers or Roman numerals: `map`
+
+```ts
+/**
+ * Map an array of general inputs to either numbers or Roman numerals
+ * @param expected { string } Expected response type
+ * @param args { general[] } Array of general inputs
+ * @returns { general[] } Mapped array of numbers or Roman numerals
+ * @throws { Error } When any of the inputs are invalid or out of range
+ */
+export function map(expected: "number" | "roman", args: general[]): general[] {}
+```
+
+🔵 <b>Example</b>
+
+```js
+console.log(roman.map("roman", [1, 2, 3, 4, 5]));
+
+// Returns [ 'I', 'II', 'III', 'IV', 'V' ]
+```
+
 ## ✨ Found this project useful?
 
 If you found this project useful, or you like what you see, then please consider giving it a ⭐️ on GitHub and sharing it with your social media folks 🙂.
