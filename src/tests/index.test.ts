@@ -9,7 +9,7 @@ import {
     sum,
     toRoman,
     max,
-    min, random
+    min, random, table, validateGeneral
 } from "../index";
 
 describe("getCount", () => {
@@ -205,7 +205,7 @@ describe("fromRoman", () => {
     );
 });
 
-describe("diff", () => {
+describe("sum", () => {
     test("should return X when called with XVIII and VIII", () => {
         expect(sum("roman", "II", "VIII")).toBe("X");
     });
@@ -213,15 +213,33 @@ describe("diff", () => {
     test("should return 98 when called with III, XXII, LXV and VIII", () => {
         expect(sum("number", "III", "XXII", "LXV", "VIII")).toBe(98);
     });
+
+    test("should throw error when sum exceeds 3999", () => {
+        try {
+            sum("roman", "MM", "MM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Result exceeds maximum value of 3999");
+        }
+    });
 });
 
-describe("sum", () => {
+describe("diff", () => {
     test("should return X when called with XVII and VIII", () => {
         expect(diff("roman", ["XVIII", "VIII"])).toBe("X");
     });
 
     test("should return 98 when called with CXVI and XVIII", () => {
         expect(diff("number", ["CXVI", "XVIII"])).toBe(98);
+    });
+
+    test("should throw error when difference is less than 1", () => {
+        try {
+            diff("roman", ["X", "X"]);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Result is less than minimum value of 1");
+        }
     });
 });
 
@@ -259,7 +277,7 @@ describe("multiply", () => {
     test("should error on any invalid input", () => {
         try {
             // @ts-ignore
-            sum("number", "X", 5);
+            multiply("number", "X", 5);
         } catch (error) {
             // @ts-ignore
             expect(error.message).toBe(
@@ -312,7 +330,7 @@ describe("divide", () => {
     test("should error on any invalid input", () => {
         try {
             // @ts-ignore
-            sum("number", "X", 5);
+            divide("number", ["X", 5]);
         } catch (error) {
             // @ts-ignore
             expect(error.message).toBe(
@@ -397,7 +415,7 @@ describe("min", () => {
     ];
 
     test.each(testCases)(
-        "should return the maximum value from %s",
+        "should return the minimum value of %s",
         (expected, inputs) => {
             expect(min(...inputs)).toBe(expected);
         }
@@ -411,7 +429,7 @@ describe("random", () => {
             random([43]);
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Max value must be a number or string");
+            expect(error.message).toBe("Input must be a string or number");
         }
     });
 
@@ -421,7 +439,7 @@ describe("random", () => {
             random(4897);
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Max value must be between 1 and 3999");
+            expect(error.message).toBe("Value must be between 1 and 3999");
         }
     });
 
@@ -431,7 +449,7 @@ describe("random", () => {
             random("MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Max value must be between 1 and 3999");
+            expect(error.message).toBe("Value must be between 1 and 3999");
         }
     });
 
@@ -451,7 +469,7 @@ describe("random", () => {
             random(100, {});
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Min value must be a number or string");
+            expect(error.message).toBe("Input must be a string or number");
         }
     });
 
@@ -461,7 +479,7 @@ describe("random", () => {
             random(300, -23);
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Min value must be less than max value and greater than 0");
+            expect(error.message).toBe("Value must be between 1 and 3999");
         }
     });
 
@@ -471,7 +489,7 @@ describe("random", () => {
             random(300, "MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Min value must be less than max value and greater than 0");
+            expect(error.message).toBe("Value must be between 1 and 3999");
         }
     });
 
@@ -501,5 +519,177 @@ describe("random", () => {
         const result = random();
         expect(fromRoman(result)).toBeGreaterThanOrEqual(1);
         expect(fromRoman(result)).toBeLessThanOrEqual(3999);
+    });
+});
+
+describe("table", () => {
+    test("should throw error on invalid start", () => {
+        try {
+            // @ts-ignore
+            table([43]);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Input must be a string or number");
+        }
+    });
+
+    test("should throw error on invalid start (number)", () => {
+        try {
+            // @ts-ignore
+            table(4897);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid start (roman)", () => {
+        try {
+            // @ts-ignore
+            table("MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid start (roman) II", () => {
+        try {
+            // @ts-ignore
+            table("VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
+    });
+
+    test("should throw error on invalid end", () => {
+        try {
+            // @ts-ignore
+            table(100, {});
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Input must be a string or number");
+        }
+    });
+
+    test("should throw error on invalid end (number)", () => {
+        try {
+            // @ts-ignore
+            table(300, -23);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid end (roman)", () => {
+        try {
+            // @ts-ignore
+            table(300, "MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid end (roman) II", () => {
+        try {
+            // @ts-ignore
+            table(230, "VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
+    });
+
+    test("should throw error when start is greater than end", () => {
+        try {
+            table("X", "V");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Start value must be less than or equal to end value");
+        }
+    });
+
+    test("should return a table from I to X", () => {
+        const result = table("I", "x");
+        expect(result).toEqual([
+            {number: 1, roman: "I"},
+            {number: 2, roman: "II"},
+            {number: 3, roman: "III"},
+            {number: 4, roman: "IV"},
+            {number: 5, roman: "V"},
+            {number: 6, roman: "VI"},
+            {number: 7, roman: "VII"},
+            {number: 8, roman: "VIII"},
+            {number: 9, roman: "IX"},
+            {number: 10, roman: "X"},
+        ]);
+    });
+
+    test("should return a table from 98 to 114", () => {
+        const result = table(98, 114);
+        expect(result).toEqual([
+            {number: 98, roman: "XCVIII"},
+            {number: 99, roman: "XCIX"},
+            {number: 100, roman: "C"},
+            {number: 101, roman: "CI"},
+            {number: 102, roman: "CII"},
+            {number: 103, roman: "CIII"},
+            {number: 104, roman: "CIV"},
+            {number: 105, roman: "CV"},
+            {number: 106, roman: "CVI"},
+            {number: 107, roman: "CVII"},
+            {number: 108, roman: "CVIII"},
+            {number: 109, roman: "CIX"},
+            {number: 110, roman: "CX"},
+            {number: 111, roman: "CXI"},
+            {number: 112, roman: "CXII"},
+            {number: 113, roman: "CXIII"},
+            {number: 114, roman: "CXIV"},
+        ]);
+    })
+})
+
+describe("validateGeneral", () => {
+    test("should throw error on invalid input", () => {
+        try {
+            // @ts-ignore
+            validateGeneral({});
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Input must be a string or number");
+        }
+    });
+
+    test("should throw error on invalid input (number)", () => {
+        try {
+            // @ts-ignore
+            validateGeneral(-23);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid input (roman)", () => {
+        try {
+            // @ts-ignore
+            validateGeneral("MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid input (roman) II", () => {
+        try {
+            // @ts-ignore
+            validateGeneral("VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
     });
 });
