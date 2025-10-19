@@ -507,3 +507,43 @@ export function table(
 
     return result;
 }
+
+/**
+ * Get the next Roman numeral
+ * @param value Current Roman numeral
+ * @returns { string } Next Roman numeral
+ * @throws { Error } When the input is invalid or out of range
+ */
+export function nextRoman(value: string): string {
+    return toRoman(fromRoman(value) as number + 1);
+}
+
+/**
+ * Get the previous Roman numeral
+ * @param value Current Roman numeral
+ * @returns { string } Previous Roman numeral
+ * @throws { Error } When the input is invalid or out of range
+ */
+export function previousRoman(value: string): string {
+    return toRoman(fromRoman(value) as number - 1);
+}
+
+/**
+ * Map an array of general inputs to either numbers or Roman numerals
+ * @param expected { string } Expected response type
+ * @param args { general[] } Array of general inputs
+ * @returns { general[] } Mapped array of numbers or Roman numerals
+ * @throws { Error } When any of the inputs are invalid or out of range
+ */
+export function map(
+    expected: "number" | "roman",
+    args: general[]
+): general[] {
+    if (expected === "number") {
+        return args.map((item) => validateGeneral(item));
+    } else if (expected === "roman") {
+        return args.map((item) => toRoman(validateGeneral(item)) as string);
+    }
+
+    return [];
+}

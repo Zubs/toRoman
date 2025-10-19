@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.table =
+exports.map =
+  exports.previousRoman =
+  exports.nextRoman =
+  exports.table =
   exports.random =
   exports.min =
   exports.max =
@@ -431,3 +434,39 @@ function table(start, end) {
   return result;
 }
 exports.table = table;
+/**
+ * Get the next Roman numeral
+ * @param value Current Roman numeral
+ * @returns { string } Next Roman numeral
+ * @throws { Error } When the input is invalid or out of range
+ */
+function nextRoman(value) {
+  return toRoman(fromRoman(value) + 1);
+}
+exports.nextRoman = nextRoman;
+/**
+ * Get the previous Roman numeral
+ * @param value Current Roman numeral
+ * @returns { string } Previous Roman numeral
+ * @throws { Error } When the input is invalid or out of range
+ */
+function previousRoman(value) {
+  return toRoman(fromRoman(value) - 1);
+}
+exports.previousRoman = previousRoman;
+/**
+ * Map an array of general inputs to either numbers or Roman numerals
+ * @param expected { string } Expected response type
+ * @param args { general[] } Array of general inputs
+ * @returns { general[] } Mapped array of numbers or Roman numerals
+ * @throws { Error } When any of the inputs are invalid or out of range
+ */
+function map(expected, args) {
+  if (expected === "number") {
+    return args.map((item) => validateGeneral(item));
+  } else if (expected === "roman") {
+    return args.map((item) => toRoman(validateGeneral(item)));
+  }
+  return [];
+}
+exports.map = map;
