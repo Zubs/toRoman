@@ -8,19 +8,6 @@ if (!arg) {
   process.exit(1);
 }
 const input = arg.toUpperCase();
-// try {
-//     console.log(input);
-//     console.log(Number(input));
-//     const isValidRoman = isRoman(input);
-//     console.log(fromRoman(input));
-//     console.log(isValidRoman);
-//     if (isValidRoman === true) {
-//         console.log(`${input} is a valid Roman numeral.`);
-//     }
-// } catch (error) {
-//     console.error("Error: ", error);
-//     process.exit(1);
-// }
 if ((0, index_1.isRoman)(input) === true) {
   console.log((0, index_1.fromRoman)(input));
 } else {

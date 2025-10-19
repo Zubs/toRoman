@@ -2,7 +2,7 @@ import {
     diff,
     fromRoman,
     getCount,
-    isRoman,
+    isRoman, multiply,
     range,
     sum,
     toRoman,
@@ -64,7 +64,7 @@ describe("isRoman", () => {
         } catch (error) {
             // @ts-ignore
             expect(error.message).toBe(
-                "I cannot appear more than 3 times in a value"
+                "V cannot appear more than 1 times in a value"
             );
         }
     });
@@ -83,7 +83,7 @@ describe("isRoman", () => {
             isRoman("XVY");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Invalid Roman numeral: Y");
+            expect(error.message).toBe("Unexpected token Y, expected I");
         }
     });
 
@@ -121,7 +121,7 @@ describe("isRoman", () => {
             isRoman("VM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Unexpected token M, M cannot come after V");
+            expect(error.message).toBe("Unexpected token M, expected I");
         }
     });
 
@@ -130,7 +130,7 @@ describe("isRoman", () => {
             isRoman("IM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Unexpected token M, M cannot come after I");
+            expect(error.message).toBe("Unexpected token M, expected either X, V or I");
         }
     });
 
@@ -248,5 +248,58 @@ describe("range", () => {
         const sample = range(250, 100, 50);
         expect(sample).toHaveLength(4);
         expect(sample).toEqual(["C", "CL", "CC", "CCL"]);
+    });
+});
+
+describe("multiply", () => {
+    test("should error on any invalid input", () => {
+        try {
+            // @ts-ignore
+            sum("number", "X", 5);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases1: [string, string, string][] = [
+        ["L", "X", "V"],
+        ["CC", "XX", "X"],
+        ["D", "L", "X"],
+        ["MMDCCCLXXX", "CXX", "XXIV"],
+    ];
+
+    test.each(testCases1)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(multiply("roman", roman1, roman2)).toBe(expected);
+        }
+    );
+
+    const testCases2: [number, string, string][] = [
+        [50, "X", "V"],
+        [200, "XX", "X"],
+        [500, "L", "X"],
+        [2880, "CXX", "XXIV"],
+    ];
+
+    test.each(testCases2)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(multiply("number", roman1, roman2)).toBe(expected);
+        }
+    );
+
+    test("should throw an error when result exceeds 4000 in roman mode", () => {
+        try {
+            multiply("roman", "MM", "III");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Result exceeds maximum value of 3999"
+            );
+        }
     });
 });

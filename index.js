@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.range =
+exports.min =
+  exports.max =
+  exports.average =
+  exports.divide =
+  exports.multiply =
+  exports.range =
   exports.diff =
   exports.sum =
   exports.fromRoman =
@@ -31,11 +36,11 @@ exports.getCount = getCount;
  */
 function isRoman(value) {
   if (!value) {
-    return new Error("Roman numeral cannot be empty");
+    throw new Error("Roman numeral cannot be empty");
   }
   // Input must be a string and not be a number
   if (typeof value !== "string" || Number(value)) {
-    return new Error("Roman numeral must be of type string");
+    throw new Error("Roman numeral must be of type string");
   }
   value = value.toUpperCase();
   const letters = value.split("");
@@ -54,7 +59,7 @@ function isRoman(value) {
     const [char, maxCount] = romans[i];
     const count = getCount(letters, char);
     if (count && count > maxCount) {
-      return new Error(
+      throw new Error(
         `${char} cannot appear more than ${maxCount} times in a value`
       );
     }
@@ -63,7 +68,7 @@ function isRoman(value) {
   if (letters.length < 2) {
     let letter = letters[0];
     if (!romanLetters.includes(letter)) {
-      return new Error(`Invalid Roman numeral: ${letter}`);
+      throw new Error(`Invalid Roman numeral: ${letter}`);
     } else {
       return true;
     }
@@ -71,23 +76,26 @@ function isRoman(value) {
   // Correct letters
   letters.forEach((letter, index) => {
     if (!romanLetters.includes(letter)) {
-      return new Error(`Invalid Roman numeral: ${letter}`);
+      throw new Error(`Invalid Roman numeral: ${letter}`);
     }
     let next = letters[index + 1];
     // Test for D
     if (letter === romanLetters[1]) {
       let badNexts = romanLetters.slice(0, 2);
       if (badNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, ${next} cannot come after ${letter}`
         );
       }
     }
     // Test for L
     if (letter === romanLetters[3]) {
-      let goodNexts = romanLetters.slice(4, 3);
+      let goodNexts = romanLetters.slice(4);
+      if (next === undefined) {
+        return;
+      }
       if (!goodNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`
         );
       }
@@ -96,7 +104,7 @@ function isRoman(value) {
     if (letter === romanLetters[4]) {
       let badNexts = romanLetters.slice(0, 2);
       if (badNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, ${next} cannot come after ${letter}`
         );
       }
@@ -104,15 +112,21 @@ function isRoman(value) {
     // Test for V
     if (letter === romanLetters[5]) {
       let goodNexts = [romanLetters[6]];
+      if (next === undefined) {
+        return;
+      }
       if (!goodNexts.includes(next)) {
-        return new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
+        throw new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
       }
     }
     // Test for I
     if (letter === romanLetters[6]) {
-      let goodNexts = romanLetters.slice(4, 3);
+      let goodNexts = romanLetters.slice(4);
+      if (next === undefined) {
+        return;
+      }
       if (!goodNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`
         );
       }
@@ -238,7 +252,7 @@ exports.sum = sum;
 function diff(expected, numerals) {
   let sum = 0;
   if (numerals.length > 2) {
-    return new Error("Cannot subtract more than 2 numerals");
+    throw new Error("Cannot subtract more than 2 numerals");
   }
   if (isRoman(numerals[0]) && isRoman(numerals[1])) {
     sum = Math.abs(fromRoman(numerals[0]) - fromRoman(numerals[1]));
@@ -264,11 +278,11 @@ function range(end, start = "I", intervals = "I") {
     }
   } else if (typeof end === "number") {
     if (end >= 4000 || end <= 0) {
-      return new Error("Range has to be between 1 and 3999");
+      throw new Error("Range has to be between 1 and 3999");
     }
     endNum = end;
   } else {
-    return new Error("End value must be a string or number");
+    throw new Error("End value must be a string or number");
   }
   // Validate start value
   if (start && typeof start === "string") {
@@ -277,11 +291,11 @@ function range(end, start = "I", intervals = "I") {
     }
   } else if (start && typeof start === "number") {
     if (start >= 4000 || start <= 0) {
-      return new Error("Range has to be between 1 and 3999");
+      throw new Error("Range has to be between 1 and 3999");
     }
     startNum = start;
   } else {
-    return new Error("Start value must be a string or number");
+    throw new Error("Start value must be a string or number");
   }
   // Validate interval value
   if (intervals && typeof intervals === "string") {
@@ -290,11 +304,11 @@ function range(end, start = "I", intervals = "I") {
     }
   } else if (intervals && typeof intervals === "number") {
     if (intervals >= 4000 || intervals <= 0) {
-      return new Error("Range has to be between 1 and 3999");
+      throw new Error("Range has to be between 1 and 3999");
     }
     diffNum = intervals;
   } else {
-    return new Error("Start value must be a string or number");
+    throw new Error("Start value must be a string or number");
   }
   for (let i = startNum; i < endNum + 1; i += diffNum) {
     ranged.push(toRoman(i));
@@ -302,3 +316,32 @@ function range(end, start = "I", intervals = "I") {
   return ranged;
 }
 exports.range = range;
+/**
+ * Multiply roman numerals
+ * @param expected { string } Expected response type
+ * @param args { string[] } Roman numerals to be added
+ * @returns { string | number } Final roman numeral
+ * @throws { Error } When the result exceeds maximum value of 3999 or invalid numeral is provided
+ */
+function multiply(expected, ...args) {
+  let product = 1;
+  for (let i = 0; i < args.length; i++) {
+    if (isRoman(args[i]) !== true) {
+      throw new Error(`Invalid Roman numeral: ${args[i]}`);
+    }
+    product *= fromRoman(args[i]);
+    if (product > 3999) {
+      throw new Error("Result exceeds maximum value of 3999");
+    }
+  }
+  return expected === "number" ? product : toRoman(product);
+}
+exports.multiply = multiply;
+function divide() {}
+exports.divide = divide;
+function average() {}
+exports.average = average;
+function max() {}
+exports.max = max;
+function min() {}
+exports.min = min;
