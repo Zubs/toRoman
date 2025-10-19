@@ -257,3 +257,38 @@ describe("multiply", () => {
     }
   });
 });
+describe("divide", () => {
+  test("should error on any invalid input", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.sum)("number", "X", 5);
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe("Roman numeral must be of type string");
+    }
+  });
+  const testCases1 = [
+    ["II", "X", "V"],
+    ["II", "XX", "X"],
+    ["V", "L", "X"],
+    ["V", "CXX", "XXIV"],
+  ];
+  test.each(testCases1)(
+    "should return %s when called with %s and %s",
+    (expected, roman1, roman2) => {
+      expect((0, index_1.divide)("roman", [roman1, roman2])).toBe(expected);
+    }
+  );
+  const testCases2 = [
+    [2, "X", "V"],
+    [2, "XX", "X"],
+    [5, "L", "X"],
+    [5, "CXX", "XXIV"],
+  ];
+  test.each(testCases2)(
+    "should return %s when called with %s and %s",
+    (expected, roman1, roman2) => {
+      expect((0, index_1.divide)("number", [roman1, roman2])).toBe(expected);
+    }
+  );
+});

@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.min =
   exports.max =
-  exports.average =
   exports.divide =
   exports.multiply =
   exports.range =
@@ -33,6 +32,7 @@ exports.getCount = getCount;
  * Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
  * @returns { boolean } true or false
+ * @throws { Error } When the input is not a valid roman numeral
  */
 function isRoman(value) {
   if (!value) {
@@ -139,6 +139,7 @@ exports.isRoman = isRoman;
  * Convert an integer to Roman numerals
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
+ * @throws { Error } When the input is not a valid integer or is out of range
  */
 function toRoman(value) {
   if (!Number.isInteger(value)) {
@@ -176,6 +177,7 @@ exports.toRoman = toRoman;
  * Convert Roman numeral to integer
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
+ * @throws { Error } When the input is not a valid Roman numeral
  */
 function fromRoman(value) {
   let arabNum = 0;
@@ -232,6 +234,7 @@ exports.fromRoman = fromRoman;
  * @param expected { string } Expected response type
  * @param args { string[] } Roman numerals to be added
  * @returns { string | number } Final roman numeral
+ * @throws { Error } When the result exceeds maximum value of 3999 or invalid numeral is provided
  */
 function sum(expected, ...args) {
   let sum = 0;
@@ -248,6 +251,7 @@ exports.sum = sum;
  * @param expected { string } Expected response type
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
+ * @throws { Error } When more than two numerals are provided
  */
 function diff(expected, numerals) {
   let sum = 0;
@@ -265,6 +269,8 @@ exports.diff = diff;
  * @param end { string | number } Value to stop at
  * @param start { string | number } Value to start from
  * @param intervals { string | number } Difference between values
+ * @returns { string[] } Array of roman numerals in the specified range
+ * @throws { Error } When any of the inputs are invalid or out of range
  */
 function range(end, start = "I", intervals = "I") {
   let endNum = 1;
@@ -337,11 +343,29 @@ function multiply(expected, ...args) {
   return expected === "number" ? product : toRoman(product);
 }
 exports.multiply = multiply;
-function divide() {}
+/**
+ * Divide two roman numerals
+ * @param expected { string } Expected response type
+ * @param numerals { string[] } Roman numerals to divide
+ * @returns { string | number }
+ * @throws { Error } When more than two numerals are provided
+ */
+function divide(expected, numerals) {
+  let quotient = 0;
+  if (numerals.length > 2) {
+    throw new Error("Cannot divide more than 2 numerals");
+  }
+  if (isRoman(numerals[0]) && isRoman(numerals[1])) {
+    quotient = Math.floor(fromRoman(numerals[0]) / fromRoman(numerals[1]));
+  }
+  return expected === "number" ? quotient : toRoman(quotient);
+}
 exports.divide = divide;
-function average() {}
-exports.average = average;
-function max() {}
+function max(...args) {
+  return "";
+}
 exports.max = max;
-function min() {}
+function min(...args) {
+  return "";
+}
 exports.min = min;

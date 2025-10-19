@@ -25,8 +25,9 @@ export function getCount(
  * Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
  * @returns { boolean } true or false
+ * @throws { Error } When the input is not a valid roman numeral
  */
-export function isRoman(value: string): true | Error {
+export function isRoman(value: string): true {
     if (!value) {
         throw new Error("Roman numeral cannot be empty");
     }
@@ -151,6 +152,7 @@ export function isRoman(value: string): true | Error {
  * Convert an integer to Roman numerals
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
+ * @throws { Error } When the input is not a valid integer or is out of range
  */
 export function toRoman(value: number): string {
     if (!Number.isInteger(value)) {
@@ -192,8 +194,9 @@ export function toRoman(value: number): string {
  * Convert Roman numeral to integer
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
+ * @throws { Error } When the input is not a valid Roman numeral
  */
-export function fromRoman(value: string): number | Error {
+export function fromRoman(value: string): number {
     let arabNum: number = 0;
 
     if (isRoman(value)) {
@@ -252,11 +255,12 @@ export function fromRoman(value: string): number | Error {
  * @param expected { string } Expected response type
  * @param args { string[] } Roman numerals to be added
  * @returns { string | number } Final roman numeral
+ * @throws { Error } When the result exceeds maximum value of 3999 or invalid numeral is provided
  */
 export function sum(
     expected: "number" | "roman",
     ...args: string[]
-): general | Error {
+): general {
     let sum = 0;
 
     args.forEach((numeral) => {
@@ -273,11 +277,12 @@ export function sum(
  * @param expected { string } Expected response type
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
+ * @throws { Error } When more than two numerals are provided
  */
 export function diff(
     expected: "number" | "roman",
     numerals: [string, string]
-): general | Error {
+): general {
     let sum = 0;
 
     if (numerals.length > 2) {
@@ -298,12 +303,14 @@ export function diff(
  * @param end { string | number } Value to stop at
  * @param start { string | number } Value to start from
  * @param intervals { string | number } Difference between values
+ * @returns { string[] } Array of roman numerals in the specified range
+ * @throws { Error } When any of the inputs are invalid or out of range
  */
 export function range(
     end: general,
     start: general = "I",
     intervals: general = "I"
-): string[] | Error {
+): string[] {
     let endNum: number = 1;
     let startNum: number = 1;
     let diffNum: number = 1;
@@ -371,7 +378,7 @@ export function range(
 export function multiply(
     expected: "number" | "roman",
     ...args: string[]
-): general | Error {
+): general {
     let product = 1;
 
     for (let i = 0; i < args.length; i++) {
@@ -389,14 +396,36 @@ export function multiply(
     return expected === "number" ? product : toRoman(product);
 }
 
-export function divide() {
+/**
+ * Divide two roman numerals
+ * @param expected { string } Expected response type
+ * @param numerals { string[] } Roman numerals to divide
+ * @returns { string | number }
+ * @throws { Error } When more than two numerals are provided
+ */
+export function divide(
+    expected: "number" | "roman",
+    numerals: [string, string]
+): general {
+    let quotient = 0;
+
+    if (numerals.length > 2) {
+        throw new Error("Cannot divide more than 2 numerals");
+    }
+
+    if (isRoman(numerals[0]) && isRoman(numerals[1])) {
+        quotient = Math.floor(
+            (fromRoman(numerals[0]) as number) / (fromRoman(numerals[1]) as number)
+        );
+    }
+
+    return expected === "number" ? quotient : toRoman(quotient);
 }
 
-export function average() {
+export function max(...args: string[]): string {
+    return "";
 }
 
-export function max() {
-}
-
-export function min() {
+export function min(...args: string[]): string {
+    return "";
 }

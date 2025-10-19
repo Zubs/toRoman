@@ -1,5 +1,5 @@
 import {
-    diff,
+    diff, divide,
     fromRoman,
     getCount,
     isRoman, multiply,
@@ -302,4 +302,46 @@ describe("multiply", () => {
             );
         }
     });
+});
+
+describe("divide", () => {
+    test("should error on any invalid input", () => {
+        try {
+            // @ts-ignore
+            sum("number", "X", 5);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases1: [string, string, string][] = [
+        ["II", "X", "V"],
+        ["II", "XX", "X"],
+        ["V", "L", "X"],
+        ["V", "CXX", "XXIV"],
+    ];
+
+    test.each(testCases1)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(divide("roman", [roman1, roman2])).toBe(expected);
+        }
+    );
+
+    const testCases2: [number, string, string][] = [
+        [2, "X", "V"],
+        [2, "XX", "X"],
+        [5, "L", "X"],
+        [5, "CXX", "XXIV"],
+    ];
+
+    test.each(testCases2)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(divide("number", [roman1, roman2])).toBe(expected);
+        }
+    );
 });
