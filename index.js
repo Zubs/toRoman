@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.range =
+exports.random =
+  exports.min =
+  exports.max =
+  exports.divide =
+  exports.multiply =
+  exports.range =
   exports.diff =
   exports.sum =
   exports.fromRoman =
@@ -28,14 +33,15 @@ exports.getCount = getCount;
  * Confirm that string is a valid roman numeral
  * @param { string } value String to be tested
  * @returns { boolean } true or false
+ * @throws { Error } When the input is not a valid roman numeral
  */
 function isRoman(value) {
   if (!value) {
-    return new Error("Roman numeral cannot be empty");
+    throw new Error("Roman numeral cannot be empty");
   }
   // Input must be a string and not be a number
   if (typeof value !== "string" || Number(value)) {
-    return new Error("Roman numeral must be of type string");
+    throw new Error("Roman numeral must be of type string");
   }
   value = value.toUpperCase();
   const letters = value.split("");
@@ -54,7 +60,7 @@ function isRoman(value) {
     const [char, maxCount] = romans[i];
     const count = getCount(letters, char);
     if (count && count > maxCount) {
-      return new Error(
+      throw new Error(
         `${char} cannot appear more than ${maxCount} times in a value`
       );
     }
@@ -63,7 +69,7 @@ function isRoman(value) {
   if (letters.length < 2) {
     let letter = letters[0];
     if (!romanLetters.includes(letter)) {
-      return new Error(`Invalid Roman numeral: ${letter}`);
+      throw new Error(`Invalid Roman numeral: ${letter}`);
     } else {
       return true;
     }
@@ -71,23 +77,26 @@ function isRoman(value) {
   // Correct letters
   letters.forEach((letter, index) => {
     if (!romanLetters.includes(letter)) {
-      return new Error(`Invalid Roman numeral: ${letter}`);
+      throw new Error(`Invalid Roman numeral: ${letter}`);
     }
     let next = letters[index + 1];
     // Test for D
     if (letter === romanLetters[1]) {
       let badNexts = romanLetters.slice(0, 2);
       if (badNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, ${next} cannot come after ${letter}`
         );
       }
     }
     // Test for L
     if (letter === romanLetters[3]) {
-      let goodNexts = romanLetters.slice(4, 3);
+      let goodNexts = romanLetters.slice(4);
+      if (next === undefined) {
+        return;
+      }
       if (!goodNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`
         );
       }
@@ -96,7 +105,7 @@ function isRoman(value) {
     if (letter === romanLetters[4]) {
       let badNexts = romanLetters.slice(0, 2);
       if (badNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, ${next} cannot come after ${letter}`
         );
       }
@@ -104,15 +113,21 @@ function isRoman(value) {
     // Test for V
     if (letter === romanLetters[5]) {
       let goodNexts = [romanLetters[6]];
+      if (next === undefined) {
+        return;
+      }
       if (!goodNexts.includes(next)) {
-        return new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
+        throw new Error(`Unexpected token ${next}, expected ${goodNexts[0]}`);
       }
     }
     // Test for I
     if (letter === romanLetters[6]) {
-      let goodNexts = romanLetters.slice(4, 3);
+      let goodNexts = romanLetters.slice(4);
+      if (next === undefined) {
+        return;
+      }
       if (!goodNexts.includes(next)) {
-        return new Error(
+        throw new Error(
           `Unexpected token ${next}, expected either ${goodNexts[0]}, ${goodNexts[1]} or ${goodNexts[2]}`
         );
       }
@@ -125,6 +140,7 @@ exports.isRoman = isRoman;
  * Convert an integer to Roman numerals
  * @param { number } value Integer to be converted to Roman numerals
  * @returns { string } Roman numeral representation of the input value
+ * @throws { Error } When the input is not a valid integer or is out of range
  */
 function toRoman(value) {
   if (!Number.isInteger(value)) {
@@ -162,6 +178,7 @@ exports.toRoman = toRoman;
  * Convert Roman numeral to integer
  * @param { string } value Roman numeral to be converted to integer
  * @returns { number } Integer representation of the input value
+ * @throws { Error } When the input is not a valid Roman numeral
  */
 function fromRoman(value) {
   let arabNum = 0;
@@ -218,6 +235,7 @@ exports.fromRoman = fromRoman;
  * @param expected { string } Expected response type
  * @param args { string[] } Roman numerals to be added
  * @returns { string | number } Final roman numeral
+ * @throws { Error } When the result exceeds maximum value of 3999 or invalid numeral is provided
  */
 function sum(expected, ...args) {
   let sum = 0;
@@ -234,11 +252,12 @@ exports.sum = sum;
  * @param expected { string } Expected response type
  * @param numerals { string[] } Roman numerals to subtract
  * @returns { string | number }
+ * @throws { Error } When more than two numerals are provided
  */
 function diff(expected, numerals) {
   let sum = 0;
   if (numerals.length > 2) {
-    return new Error("Cannot subtract more than 2 numerals");
+    throw new Error("Cannot subtract more than 2 numerals");
   }
   if (isRoman(numerals[0]) && isRoman(numerals[1])) {
     sum = Math.abs(fromRoman(numerals[0]) - fromRoman(numerals[1]));
@@ -251,6 +270,8 @@ exports.diff = diff;
  * @param end { string | number } Value to stop at
  * @param start { string | number } Value to start from
  * @param intervals { string | number } Difference between values
+ * @returns { string[] } Array of roman numerals in the specified range
+ * @throws { Error } When any of the inputs are invalid or out of range
  */
 function range(end, start = "I", intervals = "I") {
   let endNum = 1;
@@ -264,11 +285,11 @@ function range(end, start = "I", intervals = "I") {
     }
   } else if (typeof end === "number") {
     if (end >= 4000 || end <= 0) {
-      return new Error("Range has to be between 1 and 3999");
+      throw new Error("Range has to be between 1 and 3999");
     }
     endNum = end;
   } else {
-    return new Error("End value must be a string or number");
+    throw new Error("End value must be a string or number");
   }
   // Validate start value
   if (start && typeof start === "string") {
@@ -277,11 +298,11 @@ function range(end, start = "I", intervals = "I") {
     }
   } else if (start && typeof start === "number") {
     if (start >= 4000 || start <= 0) {
-      return new Error("Range has to be between 1 and 3999");
+      throw new Error("Range has to be between 1 and 3999");
     }
     startNum = start;
   } else {
-    return new Error("Start value must be a string or number");
+    throw new Error("Start value must be a string or number");
   }
   // Validate interval value
   if (intervals && typeof intervals === "string") {
@@ -290,11 +311,11 @@ function range(end, start = "I", intervals = "I") {
     }
   } else if (intervals && typeof intervals === "number") {
     if (intervals >= 4000 || intervals <= 0) {
-      return new Error("Range has to be between 1 and 3999");
+      throw new Error("Range has to be between 1 and 3999");
     }
     diffNum = intervals;
   } else {
-    return new Error("Start value must be a string or number");
+    throw new Error("Start value must be a string or number");
   }
   for (let i = startNum; i < endNum + 1; i += diffNum) {
     ranged.push(toRoman(i));
@@ -302,3 +323,120 @@ function range(end, start = "I", intervals = "I") {
   return ranged;
 }
 exports.range = range;
+/**
+ * Multiply roman numerals
+ * @param expected { string } Expected response type
+ * @param args { string[] } Roman numerals to be added
+ * @returns { string | number } Final roman numeral
+ * @throws { Error } When the result exceeds maximum value of 3999 or invalid numeral is provided
+ */
+function multiply(expected, ...args) {
+  let product = 1;
+  for (let i = 0; i < args.length; i++) {
+    if (isRoman(args[i]) !== true) {
+      throw new Error(`Invalid Roman numeral: ${args[i]}`);
+    }
+    product *= fromRoman(args[i]);
+    if (product > 3999) {
+      throw new Error("Result exceeds maximum value of 3999");
+    }
+  }
+  return expected === "number" ? product : toRoman(product);
+}
+exports.multiply = multiply;
+/**
+ * Divide two roman numerals
+ * @param expected { string } Expected response type
+ * @param numerals { string[] } Roman numerals to divide
+ * @returns { string | number }
+ * @throws { Error } When more than two numerals are provided
+ */
+function divide(expected, numerals) {
+  let quotient = 0;
+  if (numerals.length > 2) {
+    throw new Error("Cannot divide more than 2 numerals");
+  }
+  if (isRoman(numerals[0]) && isRoman(numerals[1])) {
+    quotient = Math.floor(fromRoman(numerals[0]) / fromRoman(numerals[1]));
+  }
+  return expected === "number" ? quotient : toRoman(quotient);
+}
+exports.divide = divide;
+function max(...args) {
+  let maxNum = 0;
+  for (let i = 0; i < args.length; i++) {
+    let currentNum = args[i];
+    if (isRoman(currentNum) !== true) {
+      throw new Error(`Invalid Roman numeral: ${args[i]}`);
+    }
+    let currentRomanNum = fromRoman(currentNum);
+    if (currentRomanNum > maxNum) {
+      maxNum = currentRomanNum;
+    }
+  }
+  return toRoman(maxNum);
+}
+exports.max = max;
+function min(...args) {
+  let minNum = 4000;
+  for (let i = 0; i < args.length; i++) {
+    let currentNum = args[i];
+    if (isRoman(currentNum) !== true) {
+      throw new Error(`Invalid Roman numeral: ${args[i]}`);
+    }
+    let currentRomanNum = fromRoman(currentNum);
+    if (currentRomanNum < minNum) {
+      minNum = currentRomanNum;
+    }
+  }
+  return toRoman(minNum);
+}
+exports.min = min;
+/**
+ * Generate a random Roman numeral within a specified range
+ * @param max Maximum value
+ * @param min Minimum value
+ * @returns { string } Random Roman numeral within the specified range
+ * @throws { Error } When the inputs are invalid or out of range
+ */
+function random(max = 3999, min = 1) {
+  let maxNum = 3999;
+  let minNum = 1;
+  if (typeof max === "number") {
+    maxNum = max;
+    if (maxNum > 3999 || maxNum <= 0) {
+      throw new Error("Max value must be between 1 and 3999");
+    }
+  } else if (typeof max === "string") {
+    if (isRoman(max)) {
+      maxNum = fromRoman(max);
+      if (maxNum > 3999 || maxNum <= 0) {
+        throw new Error("Max value must be between 1 and 3999");
+      }
+    }
+  } else {
+    throw new Error("Max value must be a number or string");
+  }
+  if (typeof min === "number") {
+    minNum = min;
+    if (minNum >= maxNum || minNum <= 0) {
+      throw new Error(
+        "Min value must be less than max value and greater than 0"
+      );
+    }
+  } else if (typeof min === "string") {
+    if (isRoman(min)) {
+      minNum = fromRoman(min);
+      if (minNum >= maxNum || minNum <= 0) {
+        throw new Error(
+          "Min value must be less than max value and greater than 0"
+        );
+      }
+    }
+  } else {
+    throw new Error("Min value must be a number or string");
+  }
+  const randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+  return toRoman(randomNum);
+}
+exports.random = random;

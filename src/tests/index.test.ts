@@ -1,11 +1,15 @@
 import {
     diff,
+    divide,
     fromRoman,
     getCount,
     isRoman,
+    multiply,
     range,
     sum,
     toRoman,
+    max,
+    min, random
 } from "../index";
 
 describe("getCount", () => {
@@ -64,7 +68,7 @@ describe("isRoman", () => {
         } catch (error) {
             // @ts-ignore
             expect(error.message).toBe(
-                "I cannot appear more than 3 times in a value"
+                "V cannot appear more than 1 times in a value"
             );
         }
     });
@@ -83,7 +87,7 @@ describe("isRoman", () => {
             isRoman("XVY");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Invalid Roman numeral: Y");
+            expect(error.message).toBe("Unexpected token Y, expected I");
         }
     });
 
@@ -121,7 +125,7 @@ describe("isRoman", () => {
             isRoman("VM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Unexpected token M, M cannot come after V");
+            expect(error.message).toBe("Unexpected token M, expected I");
         }
     });
 
@@ -130,7 +134,7 @@ describe("isRoman", () => {
             isRoman("IM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Unexpected token M, M cannot come after I");
+            expect(error.message).toBe("Unexpected token M, expected either X, V or I");
         }
     });
 
@@ -248,5 +252,254 @@ describe("range", () => {
         const sample = range(250, 100, 50);
         expect(sample).toHaveLength(4);
         expect(sample).toEqual(["C", "CL", "CC", "CCL"]);
+    });
+});
+
+describe("multiply", () => {
+    test("should error on any invalid input", () => {
+        try {
+            // @ts-ignore
+            sum("number", "X", 5);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases1: [string, string, string][] = [
+        ["L", "X", "V"],
+        ["CC", "XX", "X"],
+        ["D", "L", "X"],
+        ["MMDCCCLXXX", "CXX", "XXIV"],
+    ];
+
+    test.each(testCases1)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(multiply("roman", roman1, roman2)).toBe(expected);
+        }
+    );
+
+    const testCases2: [number, string, string][] = [
+        [50, "X", "V"],
+        [200, "XX", "X"],
+        [500, "L", "X"],
+        [2880, "CXX", "XXIV"],
+    ];
+
+    test.each(testCases2)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(multiply("number", roman1, roman2)).toBe(expected);
+        }
+    );
+
+    test("should throw an error when result exceeds 4000 in roman mode", () => {
+        try {
+            multiply("roman", "MM", "III");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Result exceeds maximum value of 3999"
+            );
+        }
+    });
+});
+
+describe("divide", () => {
+    test("should error on any invalid input", () => {
+        try {
+            // @ts-ignore
+            sum("number", "X", 5);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases1: [string, string, string][] = [
+        ["II", "X", "V"],
+        ["II", "XX", "X"],
+        ["V", "L", "X"],
+        ["V", "CXX", "XXIV"],
+    ];
+
+    test.each(testCases1)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(divide("roman", [roman1, roman2])).toBe(expected);
+        }
+    );
+
+    const testCases2: [number, string, string][] = [
+        [2, "X", "V"],
+        [2, "XX", "X"],
+        [5, "L", "X"],
+        [5, "CXX", "XXIV"],
+    ];
+
+    test.each(testCases2)(
+        "should return %s when called with %s and %s",
+        (expected, roman1, roman2) => {
+            expect(divide("number", [roman1, roman2])).toBe(expected);
+        }
+    );
+});
+
+describe("max", () => {
+    test("should throw an error on invalid input", () => {
+        try {
+            // @ts-ignore
+            expect(max("X", 5));
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases: [string, string[]][] = [
+        ["X", ["X", "V", "III", "VIII"]],
+        ["MM", ["MM", "MCMXC", "MDCCCLXXXVIII", "MCMLXXVI"]],
+        ["CDXLIV", ["CDXLIV", "CCCXL", "CCCLX", "CDXX"]],
+    ];
+
+    test.each(testCases)(
+        "should return the maximum value from %s",
+        (expected, inputs) => {
+            expect(max(...inputs)).toBe(expected);
+        }
+    );
+});
+
+describe("min", () => {
+    test("should throw an error on invalid input", () => {
+        try {
+            // @ts-ignore
+            expect(min("X", 5));
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases: [string, string[]][] = [
+        ["III", ["X", "V", "III", "VIII"]],
+        ["MDCCCLXXXVIII", ["MM", "MCMXC", "MDCCCLXXXVIII", "MCMLXXVI"]],
+        ["CCCXL", ["CDXLIV", "CCCXL", "CCCLX", "CDXX"]],
+    ];
+
+    test.each(testCases)(
+        "should return the maximum value from %s",
+        (expected, inputs) => {
+            expect(min(...inputs)).toBe(expected);
+        }
+    );
+});
+
+describe("random", () => {
+    test("should throw error on invalid max", () => {
+        try {
+            // @ts-ignore
+            random([43]);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Max value must be a number or string");
+        }
+    });
+
+    test("should throw error on invalid max (number)", () => {
+        try {
+            // @ts-ignore
+            random(4897);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Max value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid max (roman)", () => {
+        try {
+            // @ts-ignore
+            random("MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Max value must be between 1 and 3999");
+        }
+    });
+
+    test("should throw error on invalid max (roman) II", () => {
+        try {
+            // @ts-ignore
+            random("VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
+    });
+
+    test("should throw error on invalid min", () => {
+        try {
+            // @ts-ignore
+            random(100, {});
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Min value must be a number or string");
+        }
+    });
+
+    test("should throw error on invalid min (number)", () => {
+        try {
+            // @ts-ignore
+            random(300, -23);
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Min value must be less than max value and greater than 0");
+        }
+    });
+
+    test("should throw error on invalid min (roman)", () => {
+        try {
+            // @ts-ignore
+            random(300, "MMMM");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Min value must be less than max value and greater than 0");
+        }
+    });
+
+    test("should throw error on invalid min (roman) II", () => {
+        try {
+            // @ts-ignore
+            random(230, "VIJ");
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe("Unexpected token J, expected either X, V or I");
+        }
+    });
+
+    test("should return a number between 1 and 100", () => {
+        const result = random(100);
+        expect(fromRoman(result)).toBeGreaterThanOrEqual(1);
+        expect(fromRoman(result)).toBeLessThanOrEqual(100);
+    });
+
+    test("should return a number between 50 and 150", () => {
+        const result = random(150, 50);
+        expect(fromRoman(result)).toBeGreaterThanOrEqual(50);
+        expect(fromRoman(result)).toBeLessThanOrEqual(150);
+    });
+
+    test("should return a number between 1 and 3999", () => {
+        const result = random();
+        expect(fromRoman(result)).toBeGreaterThanOrEqual(1);
+        expect(fromRoman(result)).toBeLessThanOrEqual(3999);
     });
 });
