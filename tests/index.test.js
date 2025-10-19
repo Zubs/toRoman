@@ -336,3 +336,104 @@ describe("min", () => {
     }
   );
 });
+describe("random", () => {
+  test("should throw error on invalid max", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)([43]);
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe("Max value must be a number or string");
+    }
+  });
+  test("should throw error on invalid max (number)", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)(4897);
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe("Max value must be between 1 and 3999");
+    }
+  });
+  test("should throw error on invalid max (roman)", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)("MMMM");
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe("Max value must be between 1 and 3999");
+    }
+  });
+  test("should throw error on invalid max (roman) II", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)("VIJ");
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe(
+        "Unexpected token J, expected either X, V or I"
+      );
+    }
+  });
+  test("should throw error on invalid min", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)(100, {});
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe("Min value must be a number or string");
+    }
+  });
+  test("should throw error on invalid min (number)", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)(300, -23);
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe(
+        "Min value must be less than max value and greater than 0"
+      );
+    }
+  });
+  test("should throw error on invalid min (roman)", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)(300, "MMMM");
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe(
+        "Min value must be less than max value and greater than 0"
+      );
+    }
+  });
+  test("should throw error on invalid min (roman) II", () => {
+    try {
+      // @ts-ignore
+      (0, index_1.random)(230, "VIJ");
+    } catch (error) {
+      // @ts-ignore
+      expect(error.message).toBe(
+        "Unexpected token J, expected either X, V or I"
+      );
+    }
+  });
+  test("should return a number between 1 and 100", () => {
+    const result = (0, index_1.random)(100);
+    expect((0, index_1.fromRoman)(result)).toBeGreaterThanOrEqual(1);
+    expect((0, index_1.fromRoman)(result)).toBeLessThanOrEqual(100);
+  });
+  test("should return a number between 50 and 150", () => {
+    const result = (0, index_1.random)(150, 50);
+    expect((0, index_1.fromRoman)(result)).toBeGreaterThanOrEqual(50);
+    expect((0, index_1.fromRoman)(result)).toBeLessThanOrEqual(150);
+  });
+  test("should return a number between 1 and 3999", () => {
+    const result = (0, index_1.random)();
+    expect((0, index_1.fromRoman)(result)).toBeGreaterThanOrEqual(1);
+    expect((0, index_1.fromRoman)(result)).toBeLessThanOrEqual(3999);
+  });
+  test("should return L", () => {
+    const result = (0, index_1.random)(50, 49);
+    expect(result).toBe("L");
+  });
+});

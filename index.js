@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.min =
+exports.random =
+  exports.min =
   exports.max =
   exports.divide =
   exports.multiply =
@@ -391,3 +392,51 @@ function min(...args) {
   return toRoman(minNum);
 }
 exports.min = min;
+/**
+ * Generate a random Roman numeral within a specified range
+ * @param max Maximum value
+ * @param min Minimum value
+ * @returns { string } Random Roman numeral within the specified range
+ * @throws { Error } When the inputs are invalid or out of range
+ */
+function random(max = 3999, min = 1) {
+  let maxNum = 3999;
+  let minNum = 1;
+  if (typeof max === "number") {
+    maxNum = max;
+    if (maxNum > 3999 || maxNum <= 0) {
+      throw new Error("Max value must be between 1 and 3999");
+    }
+  } else if (typeof max === "string") {
+    if (isRoman(max)) {
+      maxNum = fromRoman(max);
+      if (maxNum > 3999 || maxNum <= 0) {
+        throw new Error("Max value must be between 1 and 3999");
+      }
+    }
+  } else {
+    throw new Error("Max value must be a number or string");
+  }
+  if (typeof min === "number") {
+    minNum = min;
+    if (minNum >= maxNum || minNum <= 0) {
+      throw new Error(
+        "Min value must be less than max value and greater than 0"
+      );
+    }
+  } else if (typeof min === "string") {
+    if (isRoman(min)) {
+      minNum = fromRoman(min);
+      if (minNum >= maxNum || minNum <= 0) {
+        throw new Error(
+          "Min value must be less than max value and greater than 0"
+        );
+      }
+    }
+  } else {
+    throw new Error("Min value must be a number or string");
+  }
+  const randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
+  return toRoman(randomNum);
+}
+exports.random = random;
