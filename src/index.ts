@@ -3,12 +3,12 @@ type general = string | number;
 /**
  * Returns the number of times an element occurs in an array
  * @param { string[] } array Array to be checked
- * @param { string | number } value string or number to be counted
+ * @param { string } value string to be counted
  * @return { number } Count of value in an array
  */
 export function getCount(
     array: string[],
-    value: general
+    value: string
 ): number {
     let count: number = 0;
 
@@ -21,8 +21,30 @@ export function getCount(
     return count;
 }
 
+/**
+ * Centralized validation for general inputs
+ * @param input { general } Input to be validated
+ * @returns { number } Validated number
+ * @throws { Error } When the input is invalid or out of range
+ */
 export function validateGeneral(input: general): number {
-    return 5;
+    let result: number = 0;
+
+    if (typeof input === "string") {
+        if (isRoman(input)) {
+            result = fromRoman(input) as number;
+        }
+    } else if (typeof input === "number") {
+        result = input;
+    } else {
+        throw new Error("Input must be a string or number");
+    }
+
+    if (result > 3999 || result <= 0) {
+        throw new Error("Value must be between 1 and 3999");
+    }
+
+    return result;
 }
 
 /**
@@ -44,7 +66,7 @@ export function isRoman(value: string): true {
     value = value.toUpperCase();
 
     const letters: string[] = value.split("");
-    const romans = [
+    const romans: [string, number][] = [
         ["M", 4],
         ["D", 1],
         ["C", 4],
@@ -271,6 +293,10 @@ export function sum(
         if (isRoman(numeral) === true) {
             sum += fromRoman(numeral) as number;
         }
+
+        if (sum > 3999) {
+            throw new Error("Result exceeds maximum value of 3999");
+        }
     });
 
     return expected === "number" ? sum : toRoman(sum);
@@ -299,6 +325,10 @@ export function diff(
         );
     }
 
+    if (sum < 1) {
+        throw new Error("Result is less than minimum value of 1");
+    }
+
     return expected === "number" ? sum : toRoman(sum);
 }
 
@@ -320,50 +350,9 @@ export function range(
     let diffNum: number = 1;
     let ranged: string[] = [];
 
-    // Validate end value
-    if (typeof end === "string") {
-        if (isRoman(end)) {
-            endNum = fromRoman(end) as number;
-        }
-    } else if (typeof end === "number") {
-        if (end >= 4000 || end <= 0) {
-            throw new Error("Range has to be between 1 and 3999");
-        }
-
-        endNum = end;
-    } else {
-        throw new Error("End value must be a string or number");
-    }
-
-    // Validate start value
-    if (start && typeof start === "string") {
-        if (isRoman(start)) {
-            startNum = fromRoman(start) as number;
-        }
-    } else if (start && typeof start === "number") {
-        if (start >= 4000 || start <= 0) {
-            throw new Error("Range has to be between 1 and 3999");
-        }
-
-        startNum = start;
-    } else {
-        throw new Error("Start value must be a string or number");
-    }
-
-    // Validate interval value
-    if (intervals && typeof intervals === "string") {
-        if (isRoman(intervals)) {
-            diffNum = fromRoman(intervals) as number;
-        }
-    } else if (intervals && typeof intervals === "number") {
-        if (intervals >= 4000 || intervals <= 0) {
-            throw new Error("Range has to be between 1 and 3999");
-        }
-
-        diffNum = intervals;
-    } else {
-        throw new Error("Start value must be a string or number");
-    }
+    endNum = validateGeneral(end);
+    startNum = validateGeneral(start);
+    diffNum = validateGeneral(intervals);
 
     for (let i = startNum; i < endNum + 1; i += diffNum) {
         ranged.push(toRoman(i) as string);
@@ -386,11 +375,9 @@ export function multiply(
     let product = 1;
 
     for (let i = 0; i < args.length; i++) {
-        if (isRoman(args[i]) !== true) {
-            throw new Error(`Invalid Roman numeral: ${args[i]}`);
+        if (isRoman(args[i])) {
+            product *= fromRoman(args[i]) as number;
         }
-
-        product *= fromRoman(args[i]) as number;
 
         if (product > 3999) {
             throw new Error("Result exceeds maximum value of 3999");
@@ -426,40 +413,48 @@ export function divide(
     return expected === "number" ? quotient : toRoman(quotient);
 }
 
+/**
+ * Get maximum roman numeral from a list
+ * @param args { string[] } Roman numerals to compare
+ * @returns { string } Maximum roman numeral
+ * @throws { Error } When an invalid numeral is provided
+ */
 export function max(...args: string[]): string {
     let maxNum: number = 0;
 
     for (let i = 0; i < args.length; i++) {
         let currentNum = args[i];
 
-        if (isRoman(currentNum) !== true) {
-            throw new Error(`Invalid Roman numeral: ${args[i]}`);
-        }
+        if (isRoman(currentNum)) {
+            let currentRomanNum = fromRoman(currentNum) as number;
 
-        let currentRomanNum = fromRoman(currentNum) as number;
-
-        if (currentRomanNum > maxNum) {
-            maxNum = currentRomanNum;
+            if (currentRomanNum > maxNum) {
+                maxNum = currentRomanNum;
+            }
         }
     }
 
     return toRoman(maxNum);
 }
 
+/**
+ * Get minimum roman numeral from a list
+ * @param args { string[] } Roman numerals to compare
+ * @returns { string } Minimum roman numeral
+ * @throws { Error } When an invalid numeral is provided
+ */
 export function min(...args: string[]): string {
     let minNum: number = 4000;
 
     for (let i = 0; i < args.length; i++) {
         let currentNum = args[i];
 
-        if (isRoman(currentNum) !== true) {
-            throw new Error(`Invalid Roman numeral: ${args[i]}`);
-        }
+        if (isRoman(currentNum)) {
+            let currentRomanNum = fromRoman(currentNum) as number;
 
-        let currentRomanNum = fromRoman(currentNum) as number;
-
-        if (currentRomanNum < minNum) {
-            minNum = currentRomanNum;
+            if (currentRomanNum < minNum) {
+                minNum = currentRomanNum;
+            }
         }
     }
 
@@ -480,41 +475,8 @@ export function random(
     let maxNum: number = 3999;
     let minNum: number = 1;
 
-    if (typeof max === "number") {
-        maxNum = max;
-
-        if (maxNum > 3999 || maxNum <= 0) {
-            throw new Error("Max value must be between 1 and 3999");
-        }
-    } else if (typeof max === "string") {
-        if (isRoman(max)) {
-            maxNum = fromRoman(max) as number;
-
-            if (maxNum > 3999 || maxNum <= 0) {
-                throw new Error("Max value must be between 1 and 3999");
-            }
-        }
-    } else {
-        throw new Error("Max value must be a number or string");
-    }
-
-    if (typeof min === "number") {
-        minNum = min;
-
-        if (minNum >= maxNum || minNum <= 0) {
-            throw new Error("Min value must be less than max value and greater than 0");
-        }
-    } else if (typeof min === "string") {
-        if (isRoman(min)) {
-            minNum = fromRoman(min) as number;
-
-            if (minNum >= maxNum || minNum <= 0) {
-                throw new Error("Min value must be less than max value and greater than 0");
-            }
-        }
-    } else {
-        throw new Error("Min value must be a number or string");
-    }
+    maxNum = validateGeneral(max);
+    minNum = validateGeneral(min);
 
     const randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
 
@@ -536,48 +498,11 @@ export function table(
     let startNum: number = 1;
     let endNum: number = 1;
 
-    if (typeof start === "number") {
-        startNum = start;
-
-        if (startNum > 3999 || startNum <= 0) {
-            throw new Error("Start value must be between 1 and 3999");
-        }
-    } else if (typeof start === "string") {
-        if (isRoman(start)) {
-            startNum = fromRoman(start) as number;
-
-            if (startNum > 3999 || startNum <= 0) {
-                throw new Error("Start value must be between 1 and 3999");
-            }
-        }
-    } else {
-        throw new Error("Start value must be a number or string");
-    }
-
-    if (typeof end === "number") {
-        endNum = end;
-
-        if (endNum > 3999 || endNum <= 0) {
-            throw new Error("End value must be between 1 and 3999");
-        }
-    } else if (typeof end === "string") {
-        if (isRoman(end)) {
-            endNum = fromRoman(end) as number;
-
-            if (endNum > 3999 || endNum <= 0) {
-                throw new Error("End value must be between 1 and 3999");
-            }
-        }
-    } else {
-        throw new Error("End value must be a number or string");
-    }
-
-    if (startNum > endNum) {
-        throw new Error("Start value must be less than or equal to end value");
-    }
+    startNum = validateGeneral(start);
+    endNum = validateGeneral(end);
 
     for (let i = startNum; i <= endNum; i++) {
-        result.push({ number: i, roman: toRoman(i) as string });
+        result.push({number: i, roman: toRoman(i) as string});
     }
 
     return result;
