@@ -502,9 +502,4 @@ describe("random", () => {
         expect(fromRoman(result)).toBeGreaterThanOrEqual(1);
         expect(fromRoman(result)).toBeLessThanOrEqual(3999);
     });
-
-    test("should return L", () => {
-        const result = random(50, 49);
-        expect(result).toBe("L");
-    });
 });

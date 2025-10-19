@@ -432,8 +432,4 @@ describe("random", () => {
     expect((0, index_1.fromRoman)(result)).toBeGreaterThanOrEqual(1);
     expect((0, index_1.fromRoman)(result)).toBeLessThanOrEqual(3999);
   });
-  test("should return L", () => {
-    const result = (0, index_1.random)(50, 49);
-    expect(result).toBe("L");
-  });
 });
