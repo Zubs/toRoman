@@ -423,9 +423,41 @@ export function divide(
 }
 
 export function max(...args: string[]): string {
-    return "";
+    let maxNum: number = 0;
+
+    for (let i = 0; i < args.length; i++) {
+        let currentNum = args[i];
+
+        if (isRoman(currentNum) !== true) {
+            throw new Error(`Invalid Roman numeral: ${args[i]}`);
+        }
+
+        let currentRomanNum = fromRoman(currentNum) as number;
+
+        if (currentRomanNum > maxNum) {
+            maxNum = currentRomanNum;
+        }
+    }
+
+    return toRoman(maxNum);
 }
 
 export function min(...args: string[]): string {
-    return "";
+    let minNum: number = 4000;
+
+    for (let i = 0; i < args.length; i++) {
+        let currentNum = args[i];
+
+        if (isRoman(currentNum) !== true) {
+            throw new Error(`Invalid Roman numeral: ${args[i]}`);
+        }
+
+        let currentRomanNum = fromRoman(currentNum) as number;
+
+        if (currentRomanNum < minNum) {
+            minNum = currentRomanNum;
+        }
+    }
+
+    return toRoman(minNum);
 }

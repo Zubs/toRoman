@@ -1,11 +1,15 @@
 import {
-    diff, divide,
+    diff,
+    divide,
     fromRoman,
     getCount,
-    isRoman, multiply,
+    isRoman,
+    multiply,
     range,
     sum,
     toRoman,
+    max,
+    min
 } from "../index";
 
 describe("getCount", () => {
@@ -342,6 +346,60 @@ describe("divide", () => {
         "should return %s when called with %s and %s",
         (expected, roman1, roman2) => {
             expect(divide("number", [roman1, roman2])).toBe(expected);
+        }
+    );
+});
+
+describe("max", () => {
+    test("should throw an error on invalid input", () => {
+        try {
+            // @ts-ignore
+            expect(max("X", 5));
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases: [string, string[]][] = [
+        ["X", ["X", "V", "III", "VIII"]],
+        ["MM", ["MM", "MCMXC", "MDCCCLXXXVIII", "MCMLXXVI"]],
+        ["CDXLIV", ["CDXLIV", "CCCXL", "CCCLX", "CDXX"]],
+    ];
+
+    test.each(testCases)(
+        "should return the maximum value from %s",
+        (expected, inputs) => {
+            expect(max(...inputs)).toBe(expected);
+        }
+    );
+});
+
+describe("min", () => {
+    test("should throw an error on invalid input", () => {
+        try {
+            // @ts-ignore
+            expect(min("X", 5));
+        } catch (error) {
+            // @ts-ignore
+            expect(error.message).toBe(
+                "Roman numeral must be of type string"
+            );
+        }
+    });
+
+    const testCases: [string, string[]][] = [
+        ["III", ["X", "V", "III", "VIII"]],
+        ["MDCCCLXXXVIII", ["MM", "MCMXC", "MDCCCLXXXVIII", "MCMLXXVI"]],
+        ["CCCXL", ["CDXLIV", "CCCXL", "CCCLX", "CDXX"]],
+    ];
+
+    test.each(testCases)(
+        "should return the maximum value from %s",
+        (expected, inputs) => {
+            expect(min(...inputs)).toBe(expected);
         }
     );
 });

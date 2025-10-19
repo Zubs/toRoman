@@ -362,10 +362,32 @@ function divide(expected, numerals) {
 }
 exports.divide = divide;
 function max(...args) {
-  return "";
+  let maxNum = 0;
+  for (let i = 0; i < args.length; i++) {
+    let currentNum = args[i];
+    if (isRoman(currentNum) !== true) {
+      throw new Error(`Invalid Roman numeral: ${args[i]}`);
+    }
+    let currentRomanNum = fromRoman(currentNum);
+    if (currentRomanNum > maxNum) {
+      maxNum = currentRomanNum;
+    }
+  }
+  return toRoman(maxNum);
 }
 exports.max = max;
 function min(...args) {
-  return "";
+  let minNum = 4000;
+  for (let i = 0; i < args.length; i++) {
+    let currentNum = args[i];
+    if (isRoman(currentNum) !== true) {
+      throw new Error(`Invalid Roman numeral: ${args[i]}`);
+    }
+    let currentRomanNum = fromRoman(currentNum);
+    if (currentRomanNum < minNum) {
+      minNum = currentRomanNum;
+    }
+  }
+  return toRoman(minNum);
 }
 exports.min = min;
