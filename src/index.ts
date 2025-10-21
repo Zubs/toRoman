@@ -345,9 +345,9 @@ export function range(
     start: general = "I",
     intervals: general = "I"
 ): string[] {
-    let endNum: number = 1;
-    let startNum: number = 1;
-    let diffNum: number = 1;
+    let endNum: number;
+    let startNum: number;
+    let diffNum: number;
     let ranged: string[] = [];
 
     endNum = validateGeneral(end);
@@ -472,8 +472,8 @@ export function random(
     max: general = 3999,
     min: general = 1,
 ): string {
-    let maxNum: number = 3999;
-    let minNum: number = 1;
+    let maxNum: number;
+    let minNum: number;
 
     maxNum = validateGeneral(max);
     minNum = validateGeneral(min);
@@ -495,8 +495,8 @@ export function table(
     end: general
 ): { number: number; roman: string }[] {
     const result: { number: number; roman: string }[] = [];
-    let startNum: number = 1;
-    let endNum: number = 1;
+    let startNum: number;
+    let endNum: number;
 
     startNum = validateGeneral(start);
     endNum = validateGeneral(end);

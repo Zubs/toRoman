@@ -37,6 +37,6 @@
     "*.{js,css,md}": "prettier --write"
   },
   "bin": {
-    "toroman": "./cli.js"
+    "toroman": "cli.js"
   }
 }

@@ -308,9 +308,9 @@ exports.diff = diff;
  * @throws { Error } When any of the inputs are invalid or out of range
  */
 function range(end, start = "I", intervals = "I") {
-  let endNum = 1;
-  let startNum = 1;
-  let diffNum = 1;
+  let endNum;
+  let startNum;
+  let diffNum;
   let ranged = [];
   endNum = validateGeneral(end);
   startNum = validateGeneral(start);
@@ -407,8 +407,8 @@ exports.min = min;
  * @throws { Error } When the inputs are invalid or out of range
  */
 function random(max = 3999, min = 1) {
-  let maxNum = 3999;
-  let minNum = 1;
+  let maxNum;
+  let minNum;
   maxNum = validateGeneral(max);
   minNum = validateGeneral(min);
   const randomNum = Math.floor(Math.random() * (maxNum - minNum + 1)) + minNum;
@@ -424,8 +424,8 @@ exports.random = random;
  */
 function table(start, end) {
   const result = [];
-  let startNum = 1;
-  let endNum = 1;
+  let startNum;
+  let endNum;
   startNum = validateGeneral(start);
   endNum = validateGeneral(end);
   for (let i = startNum; i <= endNum; i++) {
