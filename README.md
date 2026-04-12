@@ -17,6 +17,10 @@ A minimalist library for Roman numeral operations.
 - Generate a table of Roman numerals 📋
 - Get Roman numerals within a range 📡
 
+## Playground
+
+You can play with the library [here](https://zubs.github.io/packages/toroman).
+
 ## 📦 Installation
 
 It can be installed with npm.
@@ -365,4 +369,5 @@ console.log(roman.map("roman", [1, 2, 3, 4, 5]));
 
 ## ✨ Found this project useful?
 
-If you found this project useful, or you like what you see, then please consider giving it a ⭐️ on GitHub and sharing it with your social media folks 🙂.
+If you found this project useful, or you like what you see, then please consider giving it a ⭐️ on GitHub and sharing it
+with your social media folks 🙂.
