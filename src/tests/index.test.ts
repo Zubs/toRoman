@@ -138,6 +138,21 @@ describe("isRoman", () => {
         }
     });
 
+    const malformed: string[] = [
+        "IIV",
+        "IXI",
+        "IXX",
+        "XCX",
+        "CMC",
+        "XXXX",
+        "CCCC",
+        "MMMM"
+    ];
+
+    test.each(malformed)("should throw on malformed numeral %s", (input) => {
+        expect(() => isRoman(input)).toThrow();
+    });
+
     test("should return true on good input", () => {
         expect(isRoman("VII")).toBeTruthy();
     });
@@ -449,7 +464,7 @@ describe("random", () => {
             random("MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Value must be between 1 and 3999");
+            expect(error.message).toBe("Invalid Roman numeral: MMMM");
         }
     });
 
@@ -489,7 +504,7 @@ describe("random", () => {
             random(300, "MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Value must be between 1 and 3999");
+            expect(error.message).toBe("Invalid Roman numeral: MMMM");
         }
     });
 
@@ -549,7 +564,7 @@ describe("table", () => {
             table("MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Value must be between 1 and 3999");
+            expect(error.message).toBe("Invalid Roman numeral: MMMM");
         }
     });
 
@@ -589,7 +604,7 @@ describe("table", () => {
             table(300, "MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Value must be between 1 and 3999");
+            expect(error.message).toBe("Invalid Roman numeral: MMMM");
         }
     });
 
@@ -679,7 +694,7 @@ describe("validateGeneral", () => {
             validateGeneral("MMMM");
         } catch (error) {
             // @ts-ignore
-            expect(error.message).toBe("Value must be between 1 and 3999");
+            expect(error.message).toBe("Invalid Roman numeral: MMMM");
         }
     });
 
