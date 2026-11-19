@@ -115,6 +115,10 @@ describe("isRoman", () => {
       );
     }
   });
+  const malformed = ["IIV", "IXI", "IXX", "XCX", "CMC", "XXXX", "CCCC", "MMMM"];
+  test.each(malformed)("should throw on malformed numeral %s", (input) => {
+    expect(() => (0, index_1.isRoman)(input)).toThrow();
+  });
   test("should return true on good input", () => {
     expect((0, index_1.isRoman)("VII")).toBeTruthy();
   });
@@ -377,7 +381,7 @@ describe("random", () => {
       (0, index_1.random)("MMMM");
     } catch (error) {
       // @ts-ignore
-      expect(error.message).toBe("Value must be between 1 and 3999");
+      expect(error.message).toBe("Invalid Roman numeral: MMMM");
     }
   });
   test("should throw error on invalid max (roman) II", () => {
@@ -415,7 +419,7 @@ describe("random", () => {
       (0, index_1.random)(300, "MMMM");
     } catch (error) {
       // @ts-ignore
-      expect(error.message).toBe("Value must be between 1 and 3999");
+      expect(error.message).toBe("Invalid Roman numeral: MMMM");
     }
   });
   test("should throw error on invalid min (roman) II", () => {
@@ -470,7 +474,7 @@ describe("table", () => {
       (0, index_1.table)("MMMM");
     } catch (error) {
       // @ts-ignore
-      expect(error.message).toBe("Value must be between 1 and 3999");
+      expect(error.message).toBe("Invalid Roman numeral: MMMM");
     }
   });
   test("should throw error on invalid start (roman) II", () => {
@@ -508,7 +512,7 @@ describe("table", () => {
       (0, index_1.table)(300, "MMMM");
     } catch (error) {
       // @ts-ignore
-      expect(error.message).toBe("Value must be between 1 and 3999");
+      expect(error.message).toBe("Invalid Roman numeral: MMMM");
     }
   });
   test("should throw error on invalid end (roman) II", () => {
@@ -595,7 +599,7 @@ describe("validateGeneral", () => {
       (0, index_1.validateGeneral)("MMMM");
     } catch (error) {
       // @ts-ignore
-      expect(error.message).toBe("Value must be between 1 and 3999");
+      expect(error.message).toBe("Invalid Roman numeral: MMMM");
     }
   });
   test("should throw error on invalid input (roman) II", () => {

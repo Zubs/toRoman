@@ -35,6 +35,16 @@ npm i toroman
 const roman = require("toRoman");
 ```
 
+The package also installs a `toroman` command.
+
+```sh
+toroman XIV
+# 14
+
+toroman IIV
+# Invalid Roman numeral: IIV (exit code 1)
+```
+
 ## 🔩 Methods
 
 ### 🔄 Convert integer to Roman numerals: `toRoman`
@@ -95,6 +105,15 @@ function isRoman(value: string): true {}
 console.log(roman.isRoman("MMMCCXXXIV"));
 
 // Returns true
+```
+
+```js
+try {
+  roman.isRoman("IIV");
+} catch (error) {
+  console.log(error.message);
+  // Invalid Roman numeral: IIV
+}
 ```
 
 ### ➕ Sum Roman numerals and get output as a Roman numeral or numbers: `sum`
