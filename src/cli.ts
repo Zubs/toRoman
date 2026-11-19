@@ -8,14 +8,40 @@ if (!arg) {
     process.exit(1);
 }
 
-const input = arg.toUpperCase();
-if (isRoman(input) === true) {
-    console.log(fromRoman(input));
-} else {
-    const num = Number(arg);
-    if (isNaN(num)) {
-        console.error("Invalid input");
-        process.exit(1);
+/**
+ * Convert a CLI argument to a number or Roman numeral.
+ * `isRoman` and `toRoman` throw on invalid input, so validation errors are
+ * treated as "not this format" and the argument is tried as the other format.
+ */
+function convert(input: string): string | number | undefined {
+    const upper = input.toUpperCase();
+
+    try {
+        if (isRoman(upper)) {
+            return fromRoman(upper);
+        }
+    } catch {
+        // Not a canonical Roman numeral; fall through to numeric parsing.
     }
-    console.log(toRoman(num));
+
+    const value = Number(input);
+
+    if (Number.isNaN(value)) {
+        return undefined;
+    }
+
+    try {
+        return toRoman(value) as string;
+    } catch {
+        return undefined;
+    }
 }
+
+const result = convert(arg);
+
+if (result === undefined) {
+    console.error("Invalid input");
+    process.exit(1);
+}
+
+console.log(result);
