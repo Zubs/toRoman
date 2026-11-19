@@ -4,18 +4,23 @@ import { toRoman, fromRoman, isRoman } from "./index";
 const arg = process.argv[2];
 
 if (!arg) {
-    console.log("Usage: toroman <number|roman>");
-    process.exit(1);
+  console.log("Usage: toroman <number|roman>");
+  process.exit(1);
 }
 
-const input = arg.toUpperCase();
-if (isRoman(input) === true) {
+try {
+  const input = arg.toUpperCase();
+  if (isRoman(input) === true) {
     console.log(fromRoman(input));
-} else {
+  } else {
     const num = Number(arg);
     if (isNaN(num)) {
-        console.error("Invalid input");
-        process.exit(1);
+      console.error("Invalid input");
+      process.exit(1);
     }
     console.log(toRoman(num));
+  }
+} catch (error) {
+  console.error((error as Error).message);
+  process.exit(1);
 }
