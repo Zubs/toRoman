@@ -8,15 +8,10 @@ if (!arg) {
   process.exit(1);
 }
 try {
-  const input = arg.toUpperCase();
-  if ((0, index_1.isRoman)(input) === true) {
-    console.log((0, index_1.fromRoman)(input));
+  const num = Number(arg);
+  if (Number.isNaN(num)) {
+    console.log(String((0, index_1.fromRoman)(arg.toUpperCase())));
   } else {
-    const num = Number(arg);
-    if (isNaN(num)) {
-      console.error("Invalid input");
-      process.exit(1);
-    }
     console.log((0, index_1.toRoman)(num));
   }
 } catch (error) {

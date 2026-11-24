@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { toRoman, fromRoman, isRoman } from "./index";
+import { toRoman, fromRoman } from "./index";
 
 const arg = process.argv[2];
 
@@ -9,15 +9,11 @@ if (!arg) {
 }
 
 try {
-  const input = arg.toUpperCase();
-  if (isRoman(input) === true) {
-    console.log(fromRoman(input));
+  const num = Number(arg);
+
+  if (Number.isNaN(num)) {
+    console.log(String(fromRoman(arg.toUpperCase())));
   } else {
-    const num = Number(arg);
-    if (isNaN(num)) {
-      console.error("Invalid input");
-      process.exit(1);
-    }
     console.log(toRoman(num));
   }
 } catch (error) {
