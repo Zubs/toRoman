@@ -14,11 +14,12 @@ const run = (...args) => {
     [cli, ...args],
     { encoding: "utf8" }
   );
-  return {
+  const output = {
     code: result.status,
     out: result.stdout.trim(),
     err: result.stderr.trim(),
   };
+  return output;
 };
 describe("cli", () => {
   const toRoman = [
